@@ -10,16 +10,6 @@ results/eloss_vs_pce/
 data/large_inputs/*
 !data/large_inputs/README.md
 
-# LaTeX build products
-manuscript/*.aux
-manuscript/*.bbl
-manuscript/*.blg
-manuscript/*.log
-manuscript/*.out
-manuscript/*.synctex.gz
-manuscript/main.pdf
-manuscript/si.pdf
-
 # HPC job logs
 job.*.out
 job.*.err

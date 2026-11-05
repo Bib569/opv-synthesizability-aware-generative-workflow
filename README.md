@@ -7,7 +7,7 @@ A synthesizability-aware hybrid molecular-generation and screening workflow that
 
 ## Overview
 
-This repository (`opv-synthesizability-aware-generative-workflow`) holds the manuscript sources (`manuscript/main.tex`, `manuscript/si.tex`), the code of the workflow, the processed data behind every data figure, the generated donor and acceptor libraries, and the scripts that redraw the figures. The workflow generates class-specific donor and acceptor libraries, scores them for synthetic practicality, pairs them, and shortlists pairs by predicted performance and building-block compatibility. The device-property model is a screening tool for ranking, not a predictor of experimentally realized performance.
+This repository (`opv-synthesizability-aware-generative-workflow`) holds the code of the workflow, the processed data behind every data figure, the generated donor and acceptor libraries, and the scripts that redraw the figures. The workflow generates class-specific donor and acceptor libraries, scores them for synthetic practicality, pairs them, and shortlists pairs by predicted performance and building-block compatibility. The device-property model is a screening tool for ranking, not a predictor of experimentally realized performance.
 
 - **Chemically controlled generation**: 12 complementary proposal and augmentation routes, followed by common structural validation, canonicalization, deduplication and an adaptive nearest-neighbor novelty filter, give 52,995 unique donors and 53,719 unique acceptors with no exact matches to the reference structures
 - **Synthetic practicality as a prioritization attribute**: SAScore, RAScore and a TANGO-inspired building-block compatibility heuristic rank molecules without claiming a confirmed synthesis route
@@ -50,7 +50,7 @@ Bibhas Das<sup>1,*</sup> and Anirban Mondal<sup>1,*</sup>
 
 Molecular discovery in organic photovoltaics (OPVs) requires simultaneous optimization of donor and acceptor structures, molecular novelty, synthetic practicality, and device-level performance. We present a synthesizability-aware hybrid molecular-generation and screening workflow for OPV donor-acceptor discovery. Twelve complementary proposal and augmentation routes produced class-specific molecular libraries that, after structural validation, canonicalization, deduplication, and adaptive novelty filtering, yielded 52,995 unique donor candidates and 53,719 unique acceptor candidates with no exact matches to the reference structures. The libraries exhibited substantial scaffold and fingerprint diversity while retaining a measurable relationship to the OPV reference domain. Synthetic practicality was assessed using SAScore, RAScore, and a TANGO-inspired building-block compatibility heuristic; 85.0% of donors and 99.3% of acceptors satisfied the operational accessibility screen. Pairing the filtered libraries produced 11,988,459 donor-acceptor combinations, ranked using a ridge-regression surrogate with isotonic recalibration and Gaussian-process residual correction trained on 300 curated device records. A total of 2,832 Tier-2 candidate pairs satisfied joint predicted performance and compatibility criteria, including a small subset with predicted high efficiency and low energy loss. Structure-disjoint validation revealed target-dependent transferability, with particularly limited quantitative reliability for fill factor and open-circuit voltage. The reported device properties are therefore interpreted as screening-based prioritization signals rather than experimentally realized performance. The workflow provides a chemically interpretable route for expanding OPV chemical space and prioritizing donor-acceptor pairs for experimental or higher-fidelity computational follow-up.
 
-(Abstract text from `manuscript/main.tex`, with LaTeX markup removed.)
+(Abstract of the associated paper, with LaTeX markup removed.)
 
 ## Workflow
 
@@ -136,7 +136,6 @@ data/figure_inputs/*.csv -> scripts/figures/01..12_*.py (run_all.py) -> PNG figu
 - Python 3.12
 - Figure scripts and local analysis (pinned in `requirements.txt` and `environment.yml`): numpy 2.4.6, pandas 2.2.3, matplotlib 3.10.1, scipy 1.15.2, scikit-learn 1.8.0, pillow 11.1.0, rdkit 2026.3.4. Scripts 08, 10 and 12 need RDKit (10 also scikit-learn and SciPy, 12 also Pillow) and skip themselves with a message if it is missing
 - HPC stages (not pinned, because the versions of the cluster environment `RAScore` were not recorded): numpy, pandas, scipy, scikit-learn, matplotlib, seaborn, RDKit, Pillow, joblib, optuna, mpi4py, and (optionally, with fallbacks in the code) tensorflow, chemprop, fcd, selfies, rascore, aizynthfinder, syba, scscore, plus RDKit's contributed `sascorer.py` and `fpscores.pkl.gz`. `hpc/setup_run_dir.sh` copies the RDKit files when it finds them
-- LaTeX with BibTeX (`achemso` style) to compile `manuscript/main.tex` and `manuscript/si.tex`; see the compile notes under [Limitations and Reproducibility Notes](#limitations-and-reproducibility-notes)
 
 ## Installation
 
@@ -180,25 +179,6 @@ opv-synthesizability-aware-generative-workflow/
 |-- requirements.txt                           # Pinned Python dependencies for figures and local analysis
 |-- environment.yml                            # Conda equivalent of requirements.txt
 |-- .gitignore                                 # Git ignore patterns
-|
-|-- manuscript/                                # Manuscript sources
-|   |-- main.tex                               # Main manuscript
-|   |-- si.tex                                 # Supporting Information
-|   |-- references.bib                         # BibTeX references
-|   `-- figures/                               # The 13 PDFs included by the .tex files
-|       |-- Scheme.pdf                         # Fig. 1 workflow scheme (no source in this repository)
-|       |-- gan_training_donor_optimized.pdf   # Fig. 2
-|       |-- gan_training_acceptor_optimized.pdf  # Fig. 3
-|       |-- combined_space_analysis.pdf        # Fig. 4
-|       |-- sascore_rascore_tango_4d_combined.pdf  # Fig. 5
-|       |-- device_properties_distribution_method1_ridge_gp.pdf  # Fig. 6
-|       |-- method1_disjoint_cv_r2.pdf         # Fig. 7
-|       |-- tier2_representative_pair.pdf      # Fig. 8
-|       |-- eloss_vs_pce_corrected.pdf         # Fig. 9
-|       |-- frechet_baseline_plot.pdf          # Fig. S1
-|       |-- tier2_scaffold_family_bars.pdf     # Fig. S2
-|       |-- tier2_building_block_recurrence.pdf  # Fig. S3
-|       `-- tier2_eloss_pce_sweet_spot.pdf     # Fig. S4
 |
 |-- src/                                       # Pipeline code
 |   |-- generation/
@@ -387,8 +367,6 @@ python src/postprocessing/merge_rank_outputs_final.py --indir <rank outputs> --o
 python src/postprocessing/merge_rank_outputs_final.py --indir <rank outputs> --outdir <merged> --stage postgen
 ```
 
-The manuscript sources use `references.bib` (BibTeX, `achemso` style). They have not been compiled as part of assembling this repository.
-
 ### Output Files
 
 | Command | Output |
@@ -397,28 +375,28 @@ The manuscript sources use `references.bib` (BibTeX, `achemso` style). They have
 | `python src/analysis/frechet_baseline_analysis.py` | `results/tier2_analysis/frechet_baseline_donor.csv`, `frechet_baseline_acceptor.csv`, `frechet_baseline_summary.txt` |
 | `python src/analysis/make_representative_figure.py` | `results/tier2_analysis/tier2_representative_pair.png` and `tier2_representative_pair_final.png` (these two files are not byte-identical to the Fig. 8 PNG written by `scripts/figures/12_tier2_representative_pair.py`; they were not compared further) |
 
-`scripts/figures/03_combined_space_analysis.py` also writes `combined_space_analysis_table.tex`, a LaTeX table of the Fig. 4 summary statistics. `main.tex` contains no tables.
+`scripts/figures/03_combined_space_analysis.py` also writes `combined_space_analysis_table.tex`, a LaTeX table of the Fig. 4 summary statistics.
 
 ## Figure-to-Script-to-Data Mapping
 
-All scripts are in `scripts/figures/`. Input CSV files are in `data/figure_inputs/`. Each script writes a PNG with the same base name as the PDF that the manuscript includes from `manuscript/figures/`.
+All scripts are in `scripts/figures/`. Input CSV files are in `data/figure_inputs/`. Each script writes a PNG; the repository ships the PNG renderings produced by these scripts in `results/reference_figures_png/`. Figure numbers follow the associated paper.
 
-| Item | Manuscript file (`manuscript/figures/`) | Script | Input data | Upstream producer of the data |
+| Item | PNG output (`results/reference_figures_png/`) | Script | Input data | Upstream producer of the data |
 |---|---|---|---|---|
-| Fig. 1 workflow scheme | `Scheme.pdf` | none | none | not reproducible (no source) |
-| Fig. 2 donor GAN training | `gan_training_donor_optimized.pdf` | `01_gan_training_donor.py` | `gan_losses_donor_optimized.csv`, `discriminator_accuracy_donor_optimized.csv` | `src/generation/GAN_240_final.py` and `src/plotting/manuscript_plots.py` |
-| Fig. 3 acceptor GAN training | `gan_training_acceptor_optimized.pdf` | `02_gan_training_acceptor.py` | `gan_losses_acceptor_optimized.csv`, `discriminator_accuracy_acceptor_optimized.csv` | same |
-| Fig. 4 chemical-space analysis | `combined_space_analysis.pdf` | `03_combined_space_analysis.py` | `donor_space4d_data.csv`, `acceptor_space4d_data.csv` | producer script not in the repository |
-| Fig. 5 SAScore x RAScore x TANGO-inspired | `sascore_rascore_tango_4d_combined.pdf` | `07_sascore_rascore_tango_4d.py` | `sascore_rascore_tango_4d_donor_data.csv`, `sascore_rascore_tango_4d_acceptor_data.csv` | `src/plotting/manuscript_plots_revised.py` |
-| Fig. 6 predicted PCE, Jsc, FF, Voc distributions | `device_properties_distribution_method1_ridge_gp.pdf` | `04_device_properties.py` | `device_properties_distribution_method1_ridge_gp_data.csv` (500,000-row subsample) | stage 1; subsampling script not in the repository |
-| Fig. 7 structure-disjoint held-out R2 | `method1_disjoint_cv_r2.pdf` | `05_disjoint_cv_r2.py` | `method1_disjoint_cv_report.csv` | stage 1 (`GAN_240_final.py`) |
-| Fig. 8 representative Tier-2 pairs | `tier2_representative_pair.pdf` | `12_tier2_representative_pair.py` | `tier2_representative_pair_data.csv` | `src/analysis/make_representative_figure.py` |
-| Fig. 9 E_loss vs PCE | `eloss_vs_pce_corrected.pdf` | `06_eloss_vs_pce.py` | `eloss_vs_pce_training_data.csv`, `eloss_vs_pce_generated_corrected_data.csv` | `src/analysis/create_eloss_vs_pce_corrected.py` (needs the multi-GB inputs) |
-| Fig. S1 split-half baseline | `frechet_baseline_plot.pdf` | `10_frechet_baseline.py` | `DMPNN.csv`, `Guzik_data.csv` (recomputes 200 split-half draws) | `src/analysis/frechet_baseline_analysis.py` |
-| Fig. S2 Tier-2 scaffold families | `tier2_scaffold_family_bars.pdf` | `08_tier2_scaffold_family_bars.py` | `high_performance_pairs.csv` | stage 1 Tier-2 filter; `src/analysis/tier2_chemical_analysis.py` |
-| Fig. S3 building-block recurrence | `tier2_building_block_recurrence.pdf` | `09_tier2_building_block_recurrence.py` | `high_performance_pairs.csv` | same |
-| Fig. S4 E_loss vs PCE sweet spot | `tier2_eloss_pce_sweet_spot.pdf` | `11_tier2_eloss_pce_sweet_spot.py` | `tier2_eloss_pce_sweet_spot_data.csv` | `src/analysis/tier2_chemical_analysis.py` (needs the multi-GB inputs) |
-| Table S1 consolidated metrics | typed into `manuscript/si.tex` | none | values in `results/postgen/generative_metrics.csv`, `results/synthesizability/output_metrics_synthesizability.txt`, `results/postgen/output_metrics_postgen.txt`, `results/summary/output_metrics_generation.txt`, `results/tier2_analysis/frechet_baseline_summary.txt` | stages 1 to 4 |
+| Fig. 1 workflow scheme | none | none | none | not reproducible (no source) |
+| Fig. 2 donor GAN training | `gan_training_donor_optimized.png` | `01_gan_training_donor.py` | `gan_losses_donor_optimized.csv`, `discriminator_accuracy_donor_optimized.csv` | `src/generation/GAN_240_final.py` and `src/plotting/manuscript_plots.py` |
+| Fig. 3 acceptor GAN training | `gan_training_acceptor_optimized.png` | `02_gan_training_acceptor.py` | `gan_losses_acceptor_optimized.csv`, `discriminator_accuracy_acceptor_optimized.csv` | same |
+| Fig. 4 chemical-space analysis | `combined_space_analysis.png` | `03_combined_space_analysis.py` | `donor_space4d_data.csv`, `acceptor_space4d_data.csv` | producer script not in the repository |
+| Fig. 5 SAScore x RAScore x TANGO-inspired | `sascore_rascore_tango_4d_combined.png` | `07_sascore_rascore_tango_4d.py` | `sascore_rascore_tango_4d_donor_data.csv`, `sascore_rascore_tango_4d_acceptor_data.csv` | `src/plotting/manuscript_plots_revised.py` |
+| Fig. 6 predicted PCE, Jsc, FF, Voc distributions | `device_properties_distribution_method1_ridge_gp.png` | `04_device_properties.py` | `device_properties_distribution_method1_ridge_gp_data.csv` (500,000-row subsample) | stage 1; subsampling script not in the repository |
+| Fig. 7 structure-disjoint held-out R2 | `method1_disjoint_cv_r2.png` | `05_disjoint_cv_r2.py` | `method1_disjoint_cv_report.csv` | stage 1 (`GAN_240_final.py`) |
+| Fig. 8 representative Tier-2 pairs | `tier2_representative_pair.png` | `12_tier2_representative_pair.py` | `tier2_representative_pair_data.csv` | `src/analysis/make_representative_figure.py` |
+| Fig. 9 E_loss vs PCE | `eloss_vs_pce_corrected.png` | `06_eloss_vs_pce.py` | `eloss_vs_pce_training_data.csv`, `eloss_vs_pce_generated_corrected_data.csv` | `src/analysis/create_eloss_vs_pce_corrected.py` (needs the multi-GB inputs) |
+| Fig. S1 split-half baseline | `frechet_baseline_plot.png` | `10_frechet_baseline.py` | `DMPNN.csv`, `Guzik_data.csv` (recomputes 200 split-half draws) | `src/analysis/frechet_baseline_analysis.py` |
+| Fig. S2 Tier-2 scaffold families | `tier2_scaffold_family_bars.png` | `08_tier2_scaffold_family_bars.py` | `high_performance_pairs.csv` | stage 1 Tier-2 filter; `src/analysis/tier2_chemical_analysis.py` |
+| Fig. S3 building-block recurrence | `tier2_building_block_recurrence.png` | `09_tier2_building_block_recurrence.py` | `high_performance_pairs.csv` | same |
+| Fig. S4 E_loss vs PCE sweet spot | `tier2_eloss_pce_sweet_spot.png` | `11_tier2_eloss_pce_sweet_spot.py` | `tier2_eloss_pce_sweet_spot_data.csv` | `src/analysis/tier2_chemical_analysis.py` (needs the multi-GB inputs) |
+| Table S1 consolidated metrics | typed into the Supporting Information of the paper | none | values in `results/postgen/generative_metrics.csv`, `results/synthesizability/output_metrics_synthesizability.txt`, `results/postgen/output_metrics_postgen.txt`, `results/summary/output_metrics_generation.txt`, `results/tier2_analysis/frechet_baseline_summary.txt` | stages 1 to 4 |
 
 Where the manuscript quotes a number, `results/` holds the file that contains it, except for the numbers listed under [Limitations and Reproducibility Notes](#limitations-and-reproducibility-notes).
 
@@ -448,12 +426,12 @@ Donor-disjoint, acceptor-disjoint and Bemis-Murcko scaffold-disjoint splits are 
 
 ### Generation and Synthesizability Components
 
-- **Generation**: donor and acceptor libraries come from 12 proposal and augmentation routes. The coordinate-based adversarial component is implemented with TensorFlow/Keras and trained separately for donors and acceptors for five epochs, with Optuna used for hyperparameter searches (details in `manuscript/si.tex`)
+- **Generation**: donor and acceptor libraries come from 12 proposal and augmentation routes. The coordinate-based adversarial component is implemented with TensorFlow/Keras and trained separately for donors and acceptors for five epochs, with Optuna used for hyperparameter searches (details in the Supporting Information of the paper)
 - **Synthetic practicality**: SAScore <= 6.0 and RAScore >= 0.5 define the operational screen (`--threshold-sa` and `--threshold-ra` in `synthesizability_scoring.py`). The combined synthesizability is 0.5 x normalized SAScore + 0.5 x RAScore. The TANGO-inspired score is S = alpha FMS + (1 - alpha) BB-Tanimoto with alpha = 0.5. It is a domain-specific compatibility heuristic and not a reproduction of the published TANGO method
 
 ## Results
 
-All numbers below are taken from `manuscript/main.tex`.
+All numbers below are taken from the associated paper.
 
 ### Generated Libraries
 
@@ -605,9 +583,8 @@ Statements about the scientific content of the manuscript are limited to what th
 |---|---|
 | Redrawing 12 of the 13 figures (Figs. 2 to 9 and S1 to S4) from the CSV files in `data/figure_inputs/` | Yes, on a laptop, in a few minutes (see [Usage](#usage)) |
 | The Fig. S1 baseline (`src/analysis/frechet_baseline_analysis.py`) and the Fig. 8 panels (`src/analysis/make_representative_figure.py`) | Yes |
-| Fig. 1 (`manuscript/figures/Scheme.pdf`) | No. It is a drawn schematic and its source is not in the repository |
+| Fig. 1 (workflow scheme) | No. It is a drawn schematic and its source is not in the repository |
 | Stage 1 (generation, 240 ranks), stage 2 (post-generation metrics) and stage 3 (synthesizability scoring) | Not locally. They were run on a SLURM cluster; the scripts and drivers are included, but the multi-GB outputs and trained models are not |
-| Typography of the manuscript PDFs | No. The scripts write PNG files with a different text setup than the PDFs in `manuscript/figures/` (see below) |
 
 ### Scope of the Model
 
@@ -615,7 +592,7 @@ The Ridge + isotonic + Gaussian-process surrogate is a screening tool. The manus
 
 ### Numbers That Cannot Be Traced to a File in This Repository
 
-1. **Fig. 1** (`Scheme.pdf`): no source or generating file.
+1. **Fig. 1** (workflow scheme): no source or generating file.
 2. **Sensitivity analysis** (2,832 to 133,943 pairs; 1,584 nominal Tier-1 pairs): no script or output file stores these values. They can only be recomputed from the 7.4 GB stage 1 pair table, which is not distributed.
 3. **Fig. 4 inputs** (`donor_space4d_data.csv`, `acceptor_space4d_data.csv`; IntDiv_i of 0.485 and 0.491): the CSV files are included, the script that computed them is not.
 4. **Fig. 6 input**: the 500,000-row subsample is included, the script that drew it is not. The full table has 11,988,459 rows.
@@ -639,18 +616,14 @@ The following files are needed to recompute some results but are too large for g
 - Trained models (`models/postgen`, `models/fcd`, `models/aizynthfinder`) were not retained.
 - The HPC conda environment `RAScore` was not recorded, so the HPC stages are not pinned. Stages 1 to 3 were not rerun in any check.
 
-### Figures: PDF Versus PNG
+### Manuscript Sources
 
-`manuscript/main.tex` and `si.tex` include vector PDFs. The scripts write PNG files. The PDFs use Computer Modern text and, for `eloss_vs_pce_corrected`, a different layout (wide axes, legend below the plot, axis label `E_loss [eV]`). The PNGs use STIX mathtext and DejaVu Serif. The plotted data and annotations agree where they were compared, but the regenerated PNGs are not typographically identical to the PDFs.
-
-### Manuscript Sources (Checked by Inspection, Not Compiled)
-
-`main.tex` uses `\Eloss` 13 times and defines it only in `si.tex`. The reference `\ref{sec:tier2composition}` has no matching `\label`. Nine `\adref` placeholders and one `{\com ...}` span remain visible in the text. The Fig. 6 dashed FF threshold is drawn at 0.8, while the Tier-1 criterion in the text is FF >= 0.75. These are left unchanged in this repository.
+The manuscript sources are not distributed in this repository, and the figure numbering follows the associated paper. The repository ships PNG renderings produced by the scripts in `scripts/figures/`. The Fig. 6 dashed FF threshold is drawn at 0.8, while the Tier-1 criterion in the text is FF >= 0.75.
 
 ### Other
 
 - `postgen_pipeline.py` is the run-time copy (`_MAX_CHEMNET_SMILES_LEN = 350`); the newer working copy differs in that one constant (349).
-- `data/input/Guzik_data.csv` is not cited in `main.tex` or `references.bib`; its provenance and licence are unconfirmed.
+- `data/input/Guzik_data.csv` was not found in the reference list of the manuscript when this repository was assembled; its provenance and licence are unconfirmed.
 - The `hpc/` drivers contain site-specific settings (partition name, job ID, environment name).
 - `src/plotting/manuscript_plots_revised.py` has the relative default `--data-dir latest_results`, which does not exist in this repository; pass `--data-dir` explicitly.
 - The manuscript does not tie the two e-mail addresses on its title page to individual authors. The pairing used in [Authors](#authors) and [Contact](#contact) follows the author order and the layout of the sibling repository README.

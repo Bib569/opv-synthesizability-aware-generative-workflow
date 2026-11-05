@@ -2,7 +2,7 @@
 
 ## Statement in the manuscript
 
-`manuscript/main.tex` ends with:
+The Data Availability section of the associated paper ends with:
 
 > The data that support the findings of this study are available from the corresponding authors upon reasonable request.
 
@@ -19,7 +19,6 @@ but are not distributed here.
 | `data/generated_libraries/` | The 52,995 donor and 53,719 acceptor molecules, with predicted properties and SAScore/RAScore/combined synthesizability. | 56 MB |
 | `results/` (without the PNG folder) | Report and table files written by the pipeline and quoted in the manuscript. | 0.4 MB |
 | `results/reference_figures_png/` | PNG renderings of the 12 data figures produced by the scripts in this repository. | 8.7 MB |
-| `manuscript/` | LaTeX sources, `references.bib`, and the 13 PDF figures that the sources include. | 5.5 MB |
 
 Column definitions for every CSV are in the "Data dictionary" section of `README.md`.
 
@@ -36,13 +35,13 @@ Column definitions for every CSV are in the "Data dictionary" section of `README
 
 ## Third-party and licensing points that need the authors' decision
 
-* `data/input/Guzik_data.csv` is a literature-derived dataset that is named in `si.tex` (Table S1, footnote a) but is
-  not cited in `main.tex` or `references.bib`. Its source and licence have not been confirmed. Confirm before the
+* `data/input/Guzik_data.csv` is a literature-derived dataset that is named in the Supporting Information of the paper (Table S1, footnote a) but
+  was not found in the paper's reference list. Its source and licence have not been confirmed. Confirm before the
   repository is made public, or remove the file and its copy in `data/figure_inputs/`.
 * `data/input/DMPNN.csv` holds 300 device records with computed electronic descriptors; the manuscript cites the literature compilation of Miyake and Saeki (miyake2021machine) and the authors' earlier work (das2024predictive) in this context. Its
   redistribution terms have not been confirmed either.
 * The repository code is released under the MIT licence (`LICENSE`). The licence text covers the code. For the data,
-  the manuscript files and the figures, the terms above and the publisher's terms apply; the MIT licence was chosen as a
+  the paper's text and figures, the terms above and the publisher's terms apply; the MIT licence was chosen as a
   permissive default because the manuscript states no licence, and it is an open point for the authors.
 * The Data Availability sentence in the manuscript ("upon reasonable request") and a public repository that ships
   processed data are not worded the same way. The authors should decide whether to update the manuscript sentence to

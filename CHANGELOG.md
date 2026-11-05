@@ -1,15 +1,21 @@
-# Changelog
+﻿# Changelog
 
 Record of every change made to the original source files when this repository was assembled from the working
 folder. Scientific logic, numerical settings and plot styling were not changed. Original files in the working
 folder were copied, never moved or edited.
 
+## Removed manuscript sources
+
+- Removed manuscript/ (main.tex, si.tex, references.bib, figure PDFs); the repository now contains code, data and results only.
+  Nothing in the code reads from that folder. README.md, CITATION.cff, `.gitignore` and `docs/` no longer refer to it.
+  The removed files remain in the git history of the earlier commits.
+
 ## Repository assembly
 
 ### File selection and placement (copies, byte-identical unless listed below)
 
-- `GAN_OSC/main.tex`, `si.tex`, `references.bib`, `figures/*.pdf` -> `manuscript/`. The .tex files were not edited:
-  all 13 `\includegraphics{figures/...pdf}` targets and `\bibliography{references}` resolve inside `manuscript/`.
+- The LaTeX sources, the bibliography and the 13 figure PDFs of the paper were first copied into a `manuscript` folder,
+  unedited. That folder was removed later (see "Removed manuscript sources" above).
 - `try_7th_august/figure_scripts_split/` scripts -> `scripts/figures/`; its `plot_data_all12/` CSVs -> `data/figure_inputs/`.
 - Pipeline scripts -> `src/{generation,postprocessing,postgen,synthesizability,plotting,analysis}/` (see `docs/PIPELINE.md`).
   `postgen_pipeline.py` is the run-time copy from `try_7th_august/latest_results/scripts/` (`_MAX_CHEMNET_SMILES_LEN = 350`,
@@ -68,7 +74,7 @@ New files: `.gitignore`, `docs/PIPELINE.md`, `hpc/setup_run_dir.sh`, this change
 
 - `README.md`, `docs/DATA_AVAILABILITY.md`, `data/large_inputs/README.md` (placeholder, listed in `.gitignore` as the one tracked file in that folder).
 - `requirements.txt` and `environment.yml`, pinned to the versions reported by `py -3.12 -m pip list` (Python 3.12.0).
-- `LICENSE` (MIT, a default chosen because the manuscript states no licence), `CITATION.cff` (authors and title from `manuscript/main.tex`).
+- `LICENSE` (MIT, a default chosen because the manuscript states no licence), `CITATION.cff` (authors and title from the LaTeX source of the paper).
 - `.gitignore`: added virtual environments, editor and OS files, temporary files and credential file patterns.
 - This changelog: the scan description no longer quotes literal token prefixes.
 
@@ -82,7 +88,7 @@ cluster paths, and the PDF/PNG files for embedded paths and metadata.
 |---|---|---|
 | Cluster user name and home path (`/home/<user>/Programs/Conda/bin/activate`) | 3 x `hpc/*.sh` (4 lines) | replaced by `CONDA_ACTIVATE` variable |
 | Absolute cluster path (`/scratch/<user>/project_solarcell/...`) | `hpc/sub_synth_scoring_240.sh` | replaced by relative default, overridable |
-| Author e-mail addresses (two institutional addresses) | `manuscript/main.tex`, `manuscript/si.tex` (`\date` line) | kept: published author contact of the manuscript |
+| Author e-mail addresses (two institutional addresses) | LaTeX sources of the paper (`\date` line; since removed from the repository) | kept: published author contact of the manuscript |
 | Author names | .tex, .bib | kept |
 | Development folder names (`try_7th_july`, `latest_results`) | comments in `GAN_240_final.py`, `merge_rank_outputs_final.py`; default of `manuscript_plots_revised.py --data-dir` | kept: not personal, no logic dependence beyond the documented default |
 | Tokens, passwords, API keys, private keys, IP addresses, Windows drive paths | none found | none |
@@ -102,4 +108,4 @@ Run once with `py -3.12` (Matplotlib 3.10.1) from a temporary copy of the reposi
 - `src/analysis/tier2_chemical_analysis.py` stops with `FileNotFoundError` for `data/large_inputs/pair_predictions.csv`, and
   `create_eloss_vs_pce_corrected.py` warns that its two large inputs are missing. Both are documented as HPC-only inputs.
 - `sh -n` passes for the four shell scripts; `hpc/setup_run_dir.sh` builds the run directory.
-- The PNGs are not pixel-comparable with the manuscript PDFs, which were exported with a different text setup (see `docs/PIPELINE.md`).
+- The PNGs are not pixel-comparable with the vector PDFs of the paper, which were exported with a different text setup.

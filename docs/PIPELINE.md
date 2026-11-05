@@ -1,12 +1,11 @@
 # Pipeline, layout and entry points
 
-This file maps each stage of the workflow in `manuscript/main.tex` to its code, its driver, its inputs and the
+This file maps each stage of the workflow described in the associated paper to its code, its driver, its inputs and the
 files that are committed. Paths are relative to the repository root.
 
 ## Layout
 
 ```
-manuscript/            main.tex, si.tex, references.bib, figures/ (the 13 PDFs that the .tex files include)
 src/
   generation/          GAN_240_final.py            stage 1: 12-route generation, pairing, Ridge+isotonic+GP surrogate, tiering, disjoint CV
   postprocessing/      merge_rank_outputs_final.py merges the 240 per-rank outputs (--stage generation | postgen)
@@ -27,7 +26,7 @@ results/
   reference_figures_png/                                PNG outputs of scripts/figures/ (byte-identical to a fresh run)
   regenerated_figures/                                  default output folder of scripts/figures/ (git-ignored)
 docs/                  this file
-CHANGELOG.md           every change made to the original code and .tex files
+CHANGELOG.md           every change made to the original code
 ```
 
 ## Entry points
@@ -61,14 +60,12 @@ installation (default `$HOME/miniconda3/bin/activate`); the environment must be 
 
 Place the first two under `data/large_inputs/` if you regenerate or obtain them from the authors.
 
-## Figures: PDF in the manuscript versus PNG from the scripts
+## Figures: PNG from the scripts
 
-`manuscript/main.tex` and `si.tex` include the 13 vector PDFs in `manuscript/figures/`. The scripts in
-`scripts/figures/` write PNGs, and the PNGs are byte-identical to `results/reference_figures_png/`. The PDFs
-were exported earlier with a different Matplotlib text setup (Computer Modern fonts, different axis-label
-wording, and a different layout for `eloss_vs_pce_corrected`), so the regenerated PNGs show the same data and
-annotations but are not the same typography as the PDFs. `Scheme.pdf` (Fig. 1) is a drawn schematic with no
-source in this repository.
+The scripts in `scripts/figures/` write PNGs, and the PNGs are byte-identical to `results/reference_figures_png/`.
+The manuscript sources and the vector PDF versions of the figures are not distributed in this repository, and the
+figure numbering follows the associated paper. Fig. 1 (the workflow scheme) is a drawn schematic with no source in
+this repository.
 
 ## Known inconsistencies carried over from the source material (not changed)
 
