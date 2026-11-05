@@ -1,0 +1,18 @@
+# Conda equivalent of requirements.txt (figure regeneration and local analysis scripts).
+# Create with:  conda env create -f environment.yml
+# Versions are those reported by `py -3.12 -m pip list` on the checking machine; they are installed
+# from PyPI through pip so that the pins are identical to requirements.txt.
+name: opv-gan-workflow
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - numpy==2.4.6
+      - pandas==2.2.3
+      - matplotlib==3.10.1
+      - scipy==1.15.2
+      - scikit-learn==1.8.0
+      - pillow==11.1.0
+      - rdkit==2026.3.4
