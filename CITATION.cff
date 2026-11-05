@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the manuscript below."
+title: "Synthesizability-Aware Hybrid Generative Workflow for Donor-Acceptor Discovery in Organic Photovoltaics"
+type: software
+authors:
+  - family-names: "Das"
+    given-names: "Bibhas"
+    email: "dasbibhas@iitgn.ac.in"
+    affiliation: "Department of Chemistry, Indian Institute of Technology Gandhinagar, Gujarat, 382355, India"
+  - family-names: "Mondal"
+    given-names: "Anirban"
+    affiliation: "Department of Chemistry, Indian Institute of Technology Gandhinagar, Gujarat, 382355, India"
+abstract: "Code, processed data and generated molecular libraries for a synthesizability-aware hybrid molecular-generation and screening workflow for organic photovoltaic donor-acceptor discovery (manuscript in preparation)."
+license: MIT
+keywords:
+  - organic photovoltaics
+  - generative models
+  - molecular generation
+  - synthesizability
+  - donor-acceptor screening
+# The manuscript has no DOI yet. Add `doi:` / `preferred-citation:` once it is published.
+# The first author's e-mail is the contact address printed in manuscript/main.tex.
+# No repository URL is set because the repository has not been published yet.
