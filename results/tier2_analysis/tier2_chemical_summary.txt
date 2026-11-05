@@ -1,0 +1,53 @@
+TIER-2 SHORTLIST CHEMICAL-INTERPRETATION SUMMARY
+======================================================================
+
+Tier-2 pairs: 2,832
+Unique donors in Tier-2: 1,099 (of 52,995 full donor library)
+Unique acceptors in Tier-2: 431 (of 53,719 full acceptor library)
+Distinct Bemis-Murcko donor scaffolds in Tier-2: 1063
+Distinct Bemis-Murcko acceptor scaffolds in Tier-2: 419
+
+Top donor scaffolds (Tier-2):
+     6 (0.5%)  c1ccc2sccc2c1
+     6 (0.5%)  c1ccsc1
+     6 (0.5%)  c1ccoc1
+     6 (0.5%)  c1cc[se]c1
+     3 (0.3%)  c1ccccc1
+
+Top acceptor scaffolds (Tier-2):
+     5 (1.2%)  c1ccsc1
+     3 (0.7%)  c1ccncc1
+     3 (0.7%)  O=C1NC(=O)c2ccccc21
+     2 (0.5%)  O=C1NC(=O)c2cc(-c3ccsc3)ccc21
+     2 (0.5%)  O=C1NC(=O)c2cc(-c3cccs3)ccc21
+
+Substructure enrichment (Tier-2 vs full generated library):
+                          motif  donor_tier2_pct  donor_full_lib_pct  donor_tier2_n  donor_tier2_total  acceptor_tier2_pct  acceptor_full_lib_pct  acceptor_tier2_n  acceptor_tier2_total
+                      thiophene        80.982712           76.010944            890               1099           57.772622              54.576593               249                   431
+                    selenophene        41.583258           44.504199            457               1099            0.000000               0.000000                 0                   431
+                          furan        44.858963           43.500330            493               1099            0.232019               0.001862                 1                   431
+                       pyridine        39.217470           41.234079            431               1099           52.204176              57.227424               225                   431
+                 benzothiophene        54.413103           48.176243            598               1099            0.000000               0.000000                 0                   431
+                 nitrile (-C#N)         0.000000            0.000000              0               1099           90.951276              82.793797               392                   431
+          cyclic imide (5-ring)         0.000000            0.000000              0               1099            0.000000               0.000000                 0                   431
+phthalimide-type (6-ring fused)         0.000000            0.000000              0               1099           78.654292              66.697072               339                   431
+benzothiadiazole-type (c1nsnc1)         1.637853            1.447306             18               1099            1.624130               1.083416                 7                   431
+
+Sweet-spot definition: E_loss <= 0.55 eV and PCE >= 17.0%
+Tier-2 pairs with defined E_loss: 2,832
+Sweet-spot pairs: 33 (1.17% of those)
+
+Top sweet-spot candidates:
+                                                         donor_smiles                                                                                                                        acceptor_smiles  surrogate_PCE  surrogate_Jsc  surrogate_FF  surrogate_Voc  eloss_pred_physical  pair_tango
+           CCC(C)CC(C)C(Cc1c[se]cc1C(C)CC)c1csc2cccc(C(CC)C(CC)CC)c12                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.219991      27.700001      0.785000       0.862220             0.540039    0.351462
+CCC(C)CC(O)(CCc1cc[se]c1)C(CCc1cc(-c2ccccc2)c2sccc2c1)c1ccnc(C(C)C)c1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.219988      27.700001      0.785000       0.863765             0.548624    0.351462
+               OCCCCc1cc2cc(Cc3cc[se]c3C(CO)c3cncc(Cc4ccco4)c3)ccc2s1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.219976      27.228436      0.785000       0.856988             0.542746    0.351462
+                                      Cc1ccc(-c2cc[se]c2CCCc2ccco2)o1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.219968      27.700001      0.785000       0.860531             0.535401    0.351462
+       CCC(C)c1ccccc1C(CC(C)C)c1ccccc1C(CC(C)(C)c1ccc[se]1)c1ccc[se]1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.219967      27.700001      0.785000       0.856836             0.529979    0.351462
+                                       CCOCC(C)CC(Cc1cc[se]c1)c1ccco1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.219963      27.700001      0.785000       0.856630             0.534364    0.351462
+                                       CC(Cc1ccccc1)CC(C)C(C)c1cccnc1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.219877      27.700001      0.785000       0.851575             0.535604    0.351462
+               Cc1cnc2c(C)c(CC(Cc3ccc(C)s3)OCCCCCCCCCCCF)c(F)c(C)c2n1 CCC=C1C(=O)c2ccccc2C1=C(C#N)CCc1cc2c(s1)-c1c(ccc3c4c(ccc13)C(CCCC#N)(CCCC(C#N)=C1C(=CCCCC)C(=O)c3ccccc31)c1cc(C#N)sc1-4)C2(CCCC)CCCCCC      18.218693      27.700001      0.613549       0.850237             0.529280    0.435577
+          CCC(O)(COc1ccncc1)c1nc(C(CC(C)c2ccccn2)c2cccs2)ccc1-c1ccoc1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.203952      27.700001      0.785000       0.863506             0.547006    0.351462
+                              CC(CC(O)c1ccco1)c1c(-c2ccoc2)ccc2ccsc12                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.196791      27.700001      0.785000       0.856099             0.549634    0.351462
+         CC(CC(Oc1cccs1)c1ccc(-c2cccnc2)c(-c2ccsc2)c1)c1occc1-c1ccsc1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      18.124196      27.700001      0.785000       0.858810             0.524953    0.351462
+                                    CC(Cc1ccco1)(Cc1ccc[se]1)c1ccccc1                                                              Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1      17.998234      26.524204      0.785000       0.858689             0.515224    0.351462

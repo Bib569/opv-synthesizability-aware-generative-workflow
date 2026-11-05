@@ -1,0 +1,173 @@
+Post-Generation Analysis Report -- ACCEPTOR molecules
+==============================================================================
+
+SCOPE AND STATUS OF THESE NUMBERS
+------------------------------------------------------------------------------
+  Device-property values quoted anywhere in this file come from a
+  DESCRIPTOR-BASED INTERPOLATIVE SCREENING SURROGATE (Ridge + Gaussian
+  Process on Morgan fingerprints), not a validated predictor. Its honest
+  held-out error is in method1_disjoint_cv_report.csv. Use it to rank and
+  shortlist candidates; do not quote it as predicted device performance.
+  The Scharber-type physics estimate (previously 'Method 2') has been
+  REMOVED from every quantitative path because its distributions were
+  dominated by hard-coded clipping ceilings rather than emergent physics.
+
+EXECUTIVE SUMMARY
+------------------------------------------------------------------------------
+  Molecules analysed (pooled) : 53719
+  Validity / Uniqueness / Novelty : 1.0000 / 1.0000 / 1.0000
+  Internal Diversity (IntDiv)  : 0.8127
+  Mean SAScore                 : 3.691
+
+MOSES-STANDARD GENERATIVE METRICS
+------------------------------------------------------------------------------
+  Validity  = 1.0000
+    Interpretation: essentially every proposed string is a chemically parseable molecule. Note this is expected to be ~1.0 here because the generation pipeline already applied RDKit validity filters before writing the pool, so this confirms the filter worked rather than measuring raw generator quality.
+
+  Uniqueness = 1.0000
+    Interpretation: virtually no duplicate structures after canonicalisation; the pool is not padded by repeats.
+
+  Novelty    = 1.0000
+    Interpretation: no generated molecule is an exact canonical match to a training molecule, i.e. nothing was memorised and echoed back. This is an EXACT-MATCH test only -- it says nothing about how structurally close the molecules are; read it together with nn_similarity_mean below.
+
+  Internal Diversity (IntDiv) = 0.8127
+    Definition: 1 - mean pairwise Morgan-Tanimoto similarity over a
+      seeded sample of the pool (sample cap and seed are recorded in
+      generative_metrics.csv so the number is reproducible).
+    NOTE ON NAMING: earlier reports called this the 'Mean Inception
+      Score'. That was wrong -- there is no classifier, no softmax and
+      no KL divergence anywhere in it. It is the MOSES internal-
+      diversity statistic and is named as such here.
+    Interpretation: good internal diversity (mean pairwise Tanimoto ~0.187); a healthy spread for a generative library.
+
+  Scaffold diversity = 0.8243
+    Interpretation: high Bemis-Murcko scaffold diversity -- the library is not a single scaffold decorated many ways.
+
+SIMILARITY TO THE TRAINING SET
+------------------------------------------------------------------------------
+  nn_similarity_mean = 0.1988  (range 0.0303 - 0.5385)
+    Definition: maximum Tanimoto similarity of each generated molecule
+      to ANY training molecule (radius-2, 2048-bit Morgan), averaged.
+      It is a nearest-neighbour measure, not a distribution distance.
+    Interpretation: mean nearest-neighbour Tanimoto to the training set is 0.199, with 99.9% of molecules below 0.5. This is far from the training fingerprint neighbourhoods: the workflow moved well beyond local analogue generation. Low similarity is NOT by itself evidence of usefulness -- it must be read alongside the property and synthesizability columns.
+
+DISTRIBUTION-DISTANCE METRICS (three, deliberately separate)
+------------------------------------------------------------------------------
+  The three distances are NOT comparable to each other in magnitude -- each
+  is a Frechet distance computed in a DIFFERENT embedding space, so only
+  relative comparisons WITHIN one metric (e.g. donor vs acceptor, or
+  approach vs approach) are meaningful.
+    FP-PCA-FD = 16.974 : distance in a 2-component PCA projection of
+        Morgan-fingerprint space. This is the metric the earlier reports
+        mislabelled as 'Frechet Distance'. Only 2 PCs are retained, so it
+        captures the coarsest structural drift and ignores everything the
+        first two components do not explain. Lower = closer to training.
+    PFD       = 428.029 : PRIMARY domain-appropriate distance. Computed in
+        the penultimate activation space of a property model trained on
+        THIS dataset's OPV donors/acceptors, so the axes correspond to
+        features that actually predict device-relevant properties. Its
+        absolute scale is arbitrary (set by the model's activations), so
+        use it comparatively, never as an absolute quality number.
+    FCD       = not available for this set. ChemNet's one-hot encoder is
+        hard-capped at 350 characters; SMILES longer than that are excluded
+        before the call (see the FCD exclusion counts in the log). If every
+        molecule on a side exceeds the cap, FCD cannot be computed at all.
+
+DESCRIPTOR-DOMAIN AGREEMENT
+------------------------------------------------------------------------------
+  legacy_property_match_mean = 0.6422
+    Definition: fraction of 6 RDKit descriptors (MW, LogP, TPSA, HBA,
+      HBD, RotBonds) falling inside the training min-max interval.
+    LIMITATION: it counts binary in/out conditions, so it can only
+      take discrete values separated by 1/6 = 0.167 -- which is why
+      its histogram shows sharp spikes rather than a smooth spread.
+      It says nothing about frontier-orbital energies, absorption or
+      device properties. Retained only for continuity with the older
+      reports; prefer the two distribution-aware measures below.
+    Interpretation: on average 3.85 of the 6 descriptors stay inside
+      the training ranges.
+
+  wasserstein_norm_mean = 2.1917
+    Definition: mean per-descriptor 1-Wasserstein distance between the
+      generated and training descriptor distributions, normalised by
+      the training spread. Distribution-aware, continuous, and it
+      does not collapse to discrete steps the way the 6-condition
+      count above does. Lower = the generated descriptor
+      distributions track the training ones more closely.
+
+  mahalanobis_gen_mean = 1787.1412
+    Definition: mean Mahalanobis distance of generated molecules to
+      the training descriptor manifold, which accounts for descriptor
+      CORRELATION instead of treating each axis independently. Large
+      values mean the pool sits outside the correlated descriptor
+      envelope the downstream surrogate was fitted on -- i.e. those
+      predictions are extrapolations and should be trusted less.
+
+SYNTHESIZABILITY
+------------------------------------------------------------------------------
+  SAScore mean = 3.691
+    Interpretation: mean SAScore 3.69 on the 1 (easy) to 10 (hard) Ertl-Schuffenhauer scale, i.e. the pool looks synthetically approachable by fragment-frequency standards. CAVEAT: SAScore is a purely structural complexity heuristic -- it never demonstrates that a route exists.
+    100.0% of molecules fall at or below SAScore 6.
+
+  EVIDENCE TIERS -- what each synthesizability number can support:
+    TIER R1 AiZynthFinder MCTS route search : real retrosynthesis
+            evidence. Only molecules audited with this backend may be
+            described as having a found route.
+    TIER R2 RAscore : a classifier distilled FROM AiZynthFinder outcomes,
+            so it approximates 'is a route findable' in milliseconds.
+            Its own authors state it does not transfer outside its ChEMBL
+            training domain, and these OPV scaffolds are outside it.
+            Indicative only.
+    TIER R3 SAScore / TANGO-inspired heuristic : structural complexity and
+            building-block overlap. Fast screens. Neither is a probability
+            that a synthesis route exists, and the TANGO-inspired score is
+            NOT the published retrosynthesis-constrained TANGO framework.
+
+PREDICTED ACCEPTOR MOLECULAR PROPERTIES
+------------------------------------------------------------------------------
+  (n reported per column: a property is only predicted for molecules the
+   corresponding model could featurise; a low n means that model was
+   unavailable or its source dataset was missing for this run.)
+
+  acc_Diff_L_Lp1                 : mean=    0.4960 std=   0.1515 min=    0.0762 max=    1.4019 n=53719
+  acc_EA                         : mean=    2.3031 std=   0.0883 min=    1.8042 max=    2.6974 n=53719
+  acc_E_S                        : mean=    2.2580 std=   0.1187 min=    1.5102 max=    2.6672 n=53719
+  acc_E_b                        : mean=    0.3676 std=   0.0268 min=    0.2379 max=    0.5071 n=53719
+  acc_HL_gap                     : mean=    2.5996 std=   0.1347 min=    1.8474 max=    3.1524 n=53719
+  acc_HOMO                       : mean=    5.9083 std=   0.1881 min=    5.0157 max=    6.4769 n=53719
+  acc_LUMO                       : mean=    3.2728 std=   0.0921 min=    2.9184 max=    3.6983 n=53719
+  acc_Q20                        : mean=   40.9949 std=   8.0166 min=   20.6674 max=   91.5420 n=53719
+  acc_dipole_debye               : mean=    3.4316 std=   1.3032 min=    1.3667 max=    9.4103 n=53719
+  acc_lambda_nm                  : mean=  512.7713 std=  74.7950 min=  271.8569 max=  847.0704 n=53719
+  acc_osc_strength               : mean=    1.2963 std=   0.2772 min=    0.2977 max=    2.7848 n=53719
+  guz_Eg_A                       : mean=    1.8273 std=   0.0850 min=    1.4371 max=    2.1801 n=53719
+  guz_Ehl_A                      : mean=    1.8664 std=   0.1223 min=    1.4327 max=    2.2954 n=53719
+  guz_HOMO_A                     : mean=   -5.8247 std=   0.2229 min=   -7.4038 max=   -4.8698 n=53719
+  guz_LUMO_A                     : mean=   -3.6435 std=   0.3623 min=   -5.3208 max=   -1.7815 n=53719
+  sascore                        : mean=    3.6427 std=   0.5698 min=    1.6513 max=    6.8572 n=53719
+  sascore_reward                 : mean=    0.7064 std=   0.0633 min=    0.3492 max=    0.9276 n=53719
+  tango_inspired_screen          : mean=    0.5018 std=   0.0953 min=    0.1467 max=    0.7333 n=53719
+
+WHICH MODEL PREDICTS EACH PROPERTY
+------------------------------------------------------------------------------
+  acc_HOMO                 winner=classical  heldout_R2(classical)=0.7000
+  acc_LUMO                 winner=classical  heldout_R2(classical)=0.5918
+  acc_HL_gap               winner=classical  heldout_R2(classical)=0.6841
+  acc_Diff_L_Lp1           winner=classical  heldout_R2(classical)=0.4197
+  acc_lambda_nm            winner=dmpnn      heldout_R2(classical)=0.6212
+  acc_E_S                  winner=classical  heldout_R2(classical)=0.6746
+  acc_osc_strength         winner=classical  heldout_R2(classical)=0.7929
+  acc_E_b                  winner=classical  heldout_R2(classical)=0.4666
+  acc_Q20                  winner=classical  heldout_R2(classical)=0.2787
+  acc_EA                   winner=classical  heldout_R2(classical)=0.6383
+  acc_dipole_debye         winner=classical  heldout_R2(classical)=0.2038
+
+  A NEGATIVE held-out R2 means the model predicts worse than simply
+  predicting the training mean, i.e. it does not generalise to unseen
+  molecules of that group. For donor-side targets this is expected:
+  only ~38 unique donor structures exist in DMPNN.csv, which is far
+  too few to learn a generalisable donor-property function. Those
+  columns are PROVISIONAL and must not be presented as predictions.
+
+==============================================================================
+Generated: 2026-08-09T16:52:37.089568

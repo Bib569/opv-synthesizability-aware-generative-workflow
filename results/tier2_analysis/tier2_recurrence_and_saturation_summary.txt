@@ -1,0 +1,43 @@
+TIER-2 BUILDING-BLOCK RECURRENCE AND SATURATION CHECK
+======================================================================
+
+Donor multiplicity per Tier-2 pair: mean=2.58, median=2, max=35
+Acceptor multiplicity per Tier-2 pair: mean=6.57, median=1, max=172
+Top-10 donors cover 5.9% of the 2,832 Tier-2 pairs.
+Top-10 acceptors cover 48.1% of the 2,832 Tier-2 pairs.
+
+Fraction-Csp3 (0=fully aromatic/conjugated backbone, 1=fully saturated):
+  Tier-2 donors:      mean=0.310  median=0.286
+  Full donor library: mean=0.329  median=0.278
+  Tier-2 acceptors:      mean=0.085  median=0.067
+  Full acceptor library: mean=0.081  median=0.065
+
+Mean number of aromatic rings per molecule:
+  Tier-2 donors:      5.72
+  Full donor library: 4.77
+  Tier-2 acceptors:      4.00
+  Full acceptor library: 3.97
+
+Top 10 recurring donors (SMILES, n Tier-2 pairs):
+   35  CCCCc1sc(-c2c3cc(C)sc3c(CC(CC)Cc3sc(Cc4ccc(-c5sc(C(CC)CCCC)c6c5C(=O)c5c(CCC(C)CCCC)sc(CC(CC)Cc7ccc(C)s7)c5C6=O)s4)cc3F)c3cc(CC)sc23)cc1F
+   19  CCCCCCc1sc(CCC(CCCc2cc3c(C)c4sc(C)cc4c(-c4ccc(SCC(C)CC)s4)c3s2)CSc2ccc(CC(C)CCCc3ccc(C(CC)CCC)s3)s2)c2c1C(=O)c1c(-c3ccc(C)s3)sc(C)c1C2=O
+   19  CCCCCc1sc(C)c2c1C(=O)c1c(-c3ccc(Cc4ccc(-c5c6cc(CC(CC)CCCCC(CC)CCCC)sc6c(-c6ccc(CC)s6)c6cc(CC(C)CC)sc56)s4)s3)sc(-c3ccc(C(C)CCC)s3)c1C2=O
+   16  CCCCc1ccc(Cc2sc(-c3ccc(CC(CCC(CC)CCCC)Cc4ccc(-c5c6cc(CC(C)CCC)sc6c(C(CC)c6ccc(C)s6)c6cc(CC)sc56)s4)s3)c3c2C(=O)c2c(CCCC)sc(C)c2C3=O)s1
+   15  CCC(Cc1ccc(-c2ccccc2)nc1)Oc1ccco1
+   15  CCCCC(CC)Cc1sc(-c2c3cc(C)sc3c(CCC(C)CCc3sc(CC)cc3F)c3cc(Cc4ccc(-c5sc(CC)c6c5C(=O)c5c(CCC(CC)CCC)sc(CC(CC)c7ccc(CC)s7)c5C6=O)s4)sc23)cc1F
+   13  CCCCC(CC)CCc1c2cc(C)sc2c(-c2ccc(Cc3ccc(SCCC(CCC)SC)s3)s2)c2cc(CCCC(CC)c3sc(CCCC(CC)CC)c4c3C(=O)c3c(-c5ccc(C)s5)sc(-c5ccc(C)s5)c3C4=O)sc12
+   12  CCCCCC(Cc1sc(CCCC(CC)CC)c2c1C(=O)c1c(CCC)sc(-c3ccc(C)s3)c1C2=O)c1cc2c(-c3cc(F)c(CCC)s3)c3sc(CC(CC)CCCC)cc3c(-c3cc(F)c(C(C)c4ccc(CC)s4)s3)c2s1
+   11  CCCCCCCCCC(CCCCCC)CCCCC(CCCCCCC)CCCc1c(F)c(F)c(-c2cc(C(=O)OCC(CC)CCCCCCCc3cc(CCC(CCCCCCCCC)COC(=O)c4cc(CCC)sc4-c4cc(CCCC)c(C)s4)sc3-c3ccc(-c4c(F)c(F)c(-c5ccc(C)s5)c5nsnc45)s3)c(CCCCCC)s2)c2nsnc12
+   11  CCCC(O)C(CC(CC)(c1ccc[se]1)C(C)O)c1cc(C(C)C(O)CC(C)c2cccnc2)co1
+
+Top 10 recurring acceptors (SMILES, n Tier-2 pairs):
+  172  Cc1ccc(C(C(=CC(C#N)=CC#N)C(=O)c2ccncc2-c2ccsc2)c2ccc(NC#N)cc2C#N)c(C#N)c1
+  165  CC(=O)C(c1ccccc1)c1sc(Nc2cccc(N)c2)c(C(=O)Cc2ccccn2)c1C#N
+  165  Cc1cc(C#N)sc1Cc1cccc(-c2cc3c(cc2NC(=O)c2cccc4c2C(=O)NC4=O)C(=O)NC3=O)n1
+  161  N#CC(C#N)=CNC(=O)Cc1scc(-c2ccccc2-c2ccccn2)c1-c1ccccc1C(C#N)C=C(C#N)C#N
+  151  CC(=O)C(=O)c1c(Nc2cc3c(c(C(C#N)Nc4cccnc4)c2)C(=O)NC3=O)ncc(C=C(C)C#N)c1C#N
+  143  N#CC=C(c1cc(C#N)sc1C=C(C#N)C#N)C(C#N)C(=C(C#N)C#N)c1cccc(-c2ccccn2)c1
+  126  N#CC(C#N)=Cc1sccc1-c1ccc(C=C(C(=O)C(N)c2ccnc(-c3ccncc3)c2)c2cccc3c2C(=O)N(C#N)C3=O)cc1C#N
+  101  Cc1cncc(NC#N)c1-c1cc(-c2ccc3c(c2)C(=O)NC3=O)c2c(c1C(=CC#N)C(=O)CNC(=O)c1ccncc1)C(=O)N(c1cccs1)C2=O
+   90  O=C(Cc1cccc2c1C(=O)NC2=O)NNc1cncc(C(C(=O)c2ccc(-c3ccccc3)cc2)c2ccc3c(c2)C(=O)NC3=O)c1
+   89  N#CNc1cc2c(c(C(C#N)c3cc4c(cc3N3C(=O)c5ccccc5C3=O)C(=O)NC4=O)c1)C(=O)N(C=C(CCC(N)=O)C(=O)C#N)C2=O

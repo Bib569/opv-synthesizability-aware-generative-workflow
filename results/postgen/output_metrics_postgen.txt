@@ -1,0 +1,214 @@
+POST-GENERATION METRICS REPORT (POOLED ACROSS ALL RANKS)
+==============================================================================
+
+METRIC NAMING (corrections applied, stated explicitly)
+------------------------------------------------------------------------------
+  Internal Diversity (IntDiv)      = 1 - mean pairwise Tanimoto.
+      Previously mislabelled 'Mean Inception Score'. It is NOT an
+      inception score (no classifier, no softmax, no KL divergence);
+      it is the MOSES-standard internal-diversity statistic.
+  FP-PCA-FD                        = Frechet distance in a 2-component PCA
+      projection of Morgan-fingerprint space. Previously reported as
+      'Frechet Distance'. It is NOT Frechet ChemNet Distance.
+  PFD (Property-Embedding Frechet) = Frechet distance in the penultimate
+      activation space of a property model trained on THIS domain
+      (OPV donors/acceptors). PRIMARY domain-appropriate distance.
+  FCD (Frechet ChemNet Distance)   = the real thing, via the `fcd` package.
+      CAVEAT: ChemNet is ChEMBL-bioactivity-trained, so this measures
+      distance in a drug-likeness embedding, not an OPV-relevant one.
+      Reported for cross-field comparability only.
+  TANGO-inspired heuristic         = building-block-overlap screen. NOT the
+      published retrosynthesis-constrained TANGO framework, and NOT a
+      probability that a synthesis route exists.
+
+==============================================================================
+GENERATIVE METRICS
+==============================================================================
+
+-- donor_pooled_all_approaches --
+  n_proposed                                 : 52995
+  validity                                   : 1.0000
+  uniqueness                                 : 1.0000
+  novelty                                    : 1.0000
+  internal_diversity                         : 0.8481
+  scaffold_diversity                         : 0.7680
+  fp_pca_frechet_distance                    : 25.2304
+  property_embedding_frechet_distance        : 444.2592
+  frechet_chemnet_distance                   : 26.5146
+  nn_similarity_mean                         : 0.1713
+  wasserstein_norm_mean                      : 1.5644
+  mahalanobis_gen_mean                       : 447.9467
+  legacy_property_match_mean                 : 0.9187
+  sascore_mean                               : 3.9388
+
+-- acceptor_pooled_all_approaches --
+  n_proposed                                 : 53719
+  validity                                   : 1.0000
+  uniqueness                                 : 1.0000
+  novelty                                    : 1.0000
+  internal_diversity                         : 0.8127
+  scaffold_diversity                         : 0.8243
+  fp_pca_frechet_distance                    : 16.9737
+  property_embedding_frechet_distance        : 428.0292
+  nn_similarity_mean                         : 0.1988
+  wasserstein_norm_mean                      : 2.1917
+  mahalanobis_gen_mean                       : 1787.1412
+  legacy_property_match_mean                 : 0.6422
+  sascore_mean                               : 3.6912
+
+NOTE: rows named '*_pooled_excluding_Training_Set_Augmentation' give the
+exploratory-methods-only view. Training_Set_Augmentation dominates the
+full pool (~18x the per-rank output of each of the other 12 approaches,
+by design: it carries a >=3-variants-per-training-molecule coverage
+guarantee rather than a fixed per-rank budget), so the pooled-all number
+is disproportionately characterised by near-neighbours of the training
+set. Both views are reported; no generated data is discarded.
+
+==============================================================================
+PROPERTY-MODEL SELECTION (group-disjoint CV horse race)
+==============================================================================
+Each target was contested between a classical featurised ensemble
+(Ridge/RandomForest/GaussianProcess on Morgan fingerprints) and a real
+D-MPNN, decided on HELD-OUT group-disjoint R^2. No family was assumed
+superior; the D-MPNN is skipped where a target has too few unique
+molecules for a GNN to generalise (that reason is recorded per target).
+
+target                     source                n  groups   clas_R2  dmpnn_R2 winner    
+------------------------------------------------------------------------------
+acc_HOMO                   DMPNN.csv           300     192    0.7000    0.6789 classical 
+acc_LUMO                   DMPNN.csv           300     192    0.5918    0.5563 classical 
+acc_HL_gap                 DMPNN.csv           300     192    0.6841    0.6193 classical 
+acc_Diff_L_Lp1             DMPNN.csv           300     192    0.4197    0.4010 classical 
+acc_lambda_nm              DMPNN.csv           300     192    0.6212    0.6440 dmpnn     
+acc_E_S                    DMPNN.csv           300     192    0.6746    0.6590 classical 
+acc_osc_strength           DMPNN.csv           300     192    0.7929    0.6418 classical 
+acc_E_b                    DMPNN.csv           300     192    0.4666    0.1519 classical 
+acc_Q20                    DMPNN.csv           300     192    0.2787    0.2638 classical 
+acc_EA                     DMPNN.csv           300     192    0.6383    0.5605 classical 
+acc_dipole_debye           DMPNN.csv           300     192    0.2038    0.1445 classical 
+don_HOMO                   DMPNN.csv           300      36   -0.2038       nan classical 
+don_LUMO                   DMPNN.csv           300      36   -0.2545       nan classical 
+don_HL_gap                 DMPNN.csv           300      36   -0.2484       nan classical 
+don_Diff_L_Lp1             DMPNN.csv           300      36    0.8568       nan classical 
+don_lambda_nm              DMPNN.csv           300      36   -0.0613       nan classical 
+don_E_S                    DMPNN.csv           300      36   -0.1812       nan classical 
+don_osc_strength           DMPNN.csv           300      36    0.3736       nan classical 
+don_E_b                    DMPNN.csv           300      36    0.0505       nan classical 
+don_IP                     DMPNN.csv           300      36   -0.0656       nan classical 
+don_dipole_debye           DMPNN.csv           300      36   -0.2716       nan classical 
+dev_Jsc                    DMPNN.csv           300      36    0.6097       nan classical 
+dev_Voc                    DMPNN.csv           300      36   -0.3142       nan classical 
+dev_FF                     DMPNN.csv           300      36    0.4664       nan classical 
+dev_PCE                    DMPNN.csv           300      36    0.6596       nan classical 
+dev_E_loss                 DMPNN.csv           219      31    0.1397       nan classical 
+guz_donor_PDI              Guzik_data.csv      202     121    0.0676   -0.0132 classical 
+guz_donor_Mn_kDa           Guzik_data.csv      185     117    0.2238    0.2227 classical 
+guz_donor_Mw_kDa           Guzik_data.csv      106      73   -0.0110    0.2126 dmpnn     
+guz_Ehl_D                  Guzik_data.csv      558     143    0.3166    0.0107 classical 
+guz_Eg_D                   Guzik_data.csv      558     143    0.7592    0.6846 classical 
+guz_HOMO_D                 Guzik_data.csv      558     143    0.4682   -0.0610 classical 
+guz_LUMO_D                 Guzik_data.csv      558     143    0.2180   -0.1711 classical 
+guz_Ehl_A                  Guzik_data.csv      558     147    0.5336    0.5100 classical 
+guz_Eg_A                   Guzik_data.csv      558     147    0.7218    0.6370 classical 
+guz_HOMO_A                 Guzik_data.csv      558     147    0.4135    0.4411 dmpnn     
+guz_LUMO_A                 Guzik_data.csv      558     147    0.2835    0.3032 dmpnn     
+guz_hole_mobility_blend    Guzik_data.csv      456     131    0.0578       nan classical 
+guz_electron_mobility_blen Guzik_data.csv      460     128    0.0437       nan classical 
+guz_log_hole_mobility      Guzik_data.csv      456     131    0.0588       nan classical 
+guz_log_electron_mobility  Guzik_data.csv      460     128    0.2477       nan classical 
+
+  Winners: classical ensemble 37 targets, D-MPNN 4 targets
+
+==============================================================================
+PREDICTED DONOR MOLECULAR PROPERTIES (pooled, n=52995 molecules)
+==============================================================================
+  don_Diff_L_Lp1                   mean=    0.9082 std=    0.1062 min=    0.1797 max=    1.1369 n=52995
+  don_E_S                          mean=    3.8864 std=    0.6613 min=    1.7870 max=    4.7693 n=52995
+  don_E_b                          mean=    0.3662 std=    0.0050 min=    0.3485 max=    0.4060 n=52995
+  don_HL_gap                       mean=    4.3874 std=    0.6713 min=    2.1741 max=    5.2647 n=52995
+  don_HOMO                         mean=    5.2935 std=    0.1239 min=    4.8064 max=    5.5369 n=52995
+  don_IP                           mean=    6.8198 std=    0.3104 min=    5.7506 max=    7.2834 n=52995
+  don_LUMO                         mean=    1.0391 std=    0.5180 min=    0.3368 max=    2.7028 n=52995
+  don_dipole_debye                 mean=    1.9482 std=    0.2613 min=    0.9465 max=    4.2417 n=52995
+  don_lambda_nm                    mean=  372.9765 std=   61.8541 min=  258.9581 max=  679.2158 n=52995
+  don_osc_strength                 mean=    0.4465 std=    0.2044 min=    0.2160 max=    1.7278 n=52995
+  guz_Eg_D                         mean=    1.8597 std=    0.0484 min=    1.5557 max=    2.0230 n=52995
+  guz_Ehl_D                        mean=    2.0516 std=    0.0751 min=    1.6784 max=    2.3916 n=52995
+  guz_HOMO_D                       mean=   -5.2436 std=    0.0670 min=   -5.5306 max=   -5.0754 n=52995
+  guz_LUMO_D                       mean=   -3.2590 std=    0.0754 min=   -3.6127 max=   -3.0496 n=52995
+  guz_donor_Mn_kDa                 mean=   29.9251 std=    4.7061 min=   24.7313 max=   77.8898 n=52995
+  guz_donor_Mw_kDa                 mean=   69.4613 std=   37.8056 min=  -21.1750 max=  288.0226 n=52995
+  guz_donor_PDI                    mean=    2.1272 std=    0.1731 min=    1.7000 max=    4.4691 n=52995
+  sascore                          mean=    3.9130 std=    0.7836 min=    1.4899 max=    7.6157 n=52995
+  sascore_reward                   mean=    0.6763 std=    0.0871 min=    0.2649 max=    0.9456 n=52995
+  tango_inspired_screen            mean=    0.4626 std=    0.0934 min=    0.1494 max=    0.7222 n=52995
+
+==============================================================================
+PREDICTED ACCEPTOR MOLECULAR PROPERTIES (pooled, n=53719 molecules)
+==============================================================================
+  acc_Diff_L_Lp1                   mean=    0.4960 std=    0.1515 min=    0.0762 max=    1.4019 n=53719
+  acc_EA                           mean=    2.3031 std=    0.0883 min=    1.8042 max=    2.6974 n=53719
+  acc_E_S                          mean=    2.2580 std=    0.1187 min=    1.5102 max=    2.6672 n=53719
+  acc_E_b                          mean=    0.3676 std=    0.0268 min=    0.2379 max=    0.5071 n=53719
+  acc_HL_gap                       mean=    2.5996 std=    0.1347 min=    1.8474 max=    3.1524 n=53719
+  acc_HOMO                         mean=    5.9083 std=    0.1881 min=    5.0157 max=    6.4769 n=53719
+  acc_LUMO                         mean=    3.2728 std=    0.0921 min=    2.9184 max=    3.6983 n=53719
+  acc_Q20                          mean=   40.9949 std=    8.0166 min=   20.6674 max=   91.5420 n=53719
+  acc_dipole_debye                 mean=    3.4316 std=    1.3032 min=    1.3667 max=    9.4103 n=53719
+  acc_lambda_nm                    mean=  512.7713 std=   74.7950 min=  271.8569 max=  847.0704 n=53719
+  acc_osc_strength                 mean=    1.2963 std=    0.2772 min=    0.2977 max=    2.7848 n=53719
+  guz_Eg_A                         mean=    1.8273 std=    0.0850 min=    1.4371 max=    2.1801 n=53719
+  guz_Ehl_A                        mean=    1.8664 std=    0.1223 min=    1.4327 max=    2.2954 n=53719
+  guz_HOMO_A                       mean=   -5.8247 std=    0.2229 min=   -7.4038 max=   -4.8698 n=53719
+  guz_LUMO_A                       mean=   -3.6435 std=    0.3623 min=   -5.3208 max=   -1.7815 n=53719
+  sascore                          mean=    3.6427 std=    0.5698 min=    1.6513 max=    6.8572 n=53719
+  sascore_reward                   mean=    0.7064 std=    0.0633 min=    0.3492 max=    0.9276 n=53719
+  tango_inspired_screen            mean=    0.5018 std=    0.0953 min=    0.1467 max=    0.7333 n=53719
+
+==============================================================================
+PREDICTED DEVICE PROPERTIES AND ENERGY LOSS (pooled, n=11988459 pairs)
+==============================================================================
+  PCE                              mean=   20.6391 std=    0.7691 min=    9.5783 max=   21.0000 n=11988459
+  Jsc                              mean=   18.1486 std=    4.3605 min=   15.1149 max=   30.0000 n=11988459
+  FF                               mean=    0.7998 std=    0.0072 min=    0.7360 max=    0.8500 n=11988459
+  Voc                              mean=    1.6631 std=    0.1192 min=    0.8325 max=    2.0000 n=11988459
+  pair_tango                       mean=    0.4401 std=    0.0758 min=    0.1467 max=    0.7059 n=11988459
+  dev_Jsc                          mean=    8.4493 std=    0.9780 min=    1.4926 max=   20.6534 n=11988459
+  dev_Voc                          mean=    0.8829 std=    0.0663 min=    0.5862 max=    1.0906 n=11988459
+  dev_FF                           mean=    0.5010 std=    0.0255 min=    0.3642 max=    0.6507 n=11988459
+  dev_PCE                          mean=    3.9703 std=    0.7625 min=    0.6680 max=   11.3881 n=11988459
+  dev_E_loss                       mean=    0.6392 std=    0.0991 min=    0.3598 max=    1.0638 n=11988459
+  guz_hole_mobility_blend          mean=    0.0006 std=    0.0002 min=    0.0003 max=    0.0032 n=11988459
+  guz_electron_mobility_blend      mean=    0.0004 std=    0.0002 min=    0.0002 max=    0.0036 n=11988459
+  guz_log_hole_mobility            mean=   -3.8427 std=    0.3323 min=   -5.1445 max=   -2.9425 n=11988459
+  guz_log_electron_mobility        mean=   -5.1580 std=    0.2385 min=   -6.3777 max=   -3.4830 n=11988459
+  eloss_pred_raw                   mean=    0.6392 std=    0.0991 min=    0.3598 max=    1.0638 n=11988459
+  eloss_pred_negative              mean=    0.0000 std=    0.0000 min=    0.0000 max=    0.0000 n=11988459
+  eloss_pred_unphysical            mean=    0.0000 std=    0.0000 min=    0.0000 max=    0.0000 n=11988459
+  eloss_pred_physical              mean=    0.6392 std=    0.0991 min=    0.3598 max=    1.0638 n=11988459
+
+  E_LOSS PHYSICS GATE: 0/11988459 predicted pairs fell below the
+  detailed-balance radiative floor (0.25 eV) and are EXCLUDED from
+  'eloss_pred_physical'. Rationale: Voc cannot exceed the optical gap
+  and a non-zero radiative loss is unavoidable, so such values are
+  model artefacts. They are flagged, not silently rewritten.
+
+==============================================================================
+RETROSYNTHESIS AUDIT (shortlist)
+==============================================================================
+  molecules audited : 864
+  backends used     : {'rascore': 864}
+  route found       : 661/864 (76.5%)
+  sascore          : mean=3.7228 min=1.9232 max=7.4035 n=864
+  rascore          : mean=0.7147 min=0.0215 max=0.9960 n=864
+  tango_inspired   : mean=0.4839 min=0.2132 max=0.6795 n=864
+
+  EVIDENCE TIER: only molecules audited with the AiZynthFinder backend
+  carry route-search evidence. RAscore is a ChEMBL-domain distilled
+  classifier (its authors state it does not transfer to exotic chemistry,
+  and OPV scaffolds are out of that domain). SAScore is a purely
+  structural complexity heuristic. Synthesizability claims must be
+  qualified by whichever backend actually produced the number.
+
+==============================================================================
+Generated: 2026-08-09T16:52:36.988062

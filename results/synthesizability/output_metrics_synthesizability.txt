@@ -1,0 +1,36 @@
+SYNTHESIZABILITY SCORING METRICS SUMMARY
+============================================================
+Generated: 2026-08-13 18:32:58
+SAScore backend: rdkit_contrib
+RAScore backend: heuristic
+Thresholds: SAScore <= 6.0, RAScore >= 0.5
+
+DONORS:
+  Total unique molecules: 52995
+  Successfully scored: 52995
+  SAScore: mean=3.913, std=0.784, median=3.887, range=[1.490, 7.616]
+    pass (<=6.0): 52016/52995 (98.2%)
+  RAScore: mean=0.6743, std=0.1900, median=0.6980, range=[0.0000, 1.0000]
+    pass (>=0.5): 45066/52995 (85.0%)
+  Combined: mean=0.6753, median=0.6943
+  Pass BOTH: 45066/52995 (85.0%)
+  Tier 1 (SA<=4 AND RA>=0.7): 22022
+  Tier 2 (SA<=6.0 AND RA>=0.5): 45066
+
+ACCEPTORS:
+  Total unique molecules: 53719
+  Successfully scored: 53719
+  SAScore: mean=3.643, std=0.570, median=3.648, range=[1.651, 6.857]
+    pass (<=6.0): 53717/53719 (100.0%)
+  RAScore: mean=0.7761, std=0.1106, median=0.7780, range=[0.0000, 1.0000]
+    pass (>=0.5): 53351/53719 (99.3%)
+  Combined: mean=0.7412, median=0.7417
+  Pass BOTH: 53351/53719 (99.3%)
+  Tier 1 (SA<=4 AND RA>=0.7): 32561
+  Tier 2 (SA<=6.0 AND RA>=0.5): 53351
+
+============================================================
+NOTE: OPV scaffolds are partially out-of-domain for ChEMBL-trained RAScore.
+SAScore may overestimate difficulty for conjugated systems accessible via
+Suzuki/Stille coupling. Use combined scores + TANGO for robust assessment.
+============================================================

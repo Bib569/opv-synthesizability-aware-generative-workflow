@@ -1,0 +1,75 @@
+Detailed Synthesizability Analysis Report for Generated Donor Molecules
+======================================================================
+
+EXECUTIVE SUMMARY
+----------------------------------------
+Total scored molecules: 52995
+- Mean SAScore: 3.913 (lower = easier)
+- Mean RAScore: 0.674 (higher = easier)
+- Pass SA threshold (<=6.0): 98.2%
+- Pass RA threshold (>=0.5): 85.0%
+- Pass BOTH: 85.0%
+- Overall: EXCELLENT synthesizability
+
+SAScore ANALYSIS (Ertl & Schuffenhauer, J. Cheminform. 2009)
+----------------------------------------
+Mean=3.9130  Median=3.8871  Std=0.7836
+Min=1.4899  Max=7.6157
+25th=3.4126  75th=4.3430
+Pass (SA<=6.0): 52016/52995 (98.2%)
+
+  Very easy (1-2)          :    164 (0.3%)
+  Easy (2-3)               :   5380 (10.2%)
+  Moderate (3-4)           :  24384 (46.0%)
+  Mod-hard (4-5)           :  19662 (37.1%)
+  Hard (5-6)               :   2426 (4.6%)
+  Very hard (6-8)          :    979 (1.8%)
+  Extremely hard (8-10)    :      0 (0.0%)
+
+RAScore ANALYSIS (Thakkar et al., Chem. Sci. 2021)
+----------------------------------------
+Mean=0.6743  Median=0.6980  Std=0.1900
+Min=0.0000  Max=1.0000
+25th=0.5790  75th=0.7960
+Pass (RA>=0.5): 45066/52995 (85.0%)
+
+  Very hard (0-0.2)        :   1481 (2.8%)
+  Hard (0.2-0.4)           :   2803 (5.3%)
+  Mod-hard (0.4-0.5)       :   3645 (6.9%)
+  Moderate (0.5-0.6)       :   6908 (13.0%)
+  Feasible (0.6-0.8)       :  25893 (48.9%)
+  Easy (0.8-1.0)           :  12265 (23.1%)
+
+COMBINED SYNTHESIZABILITY
+----------------------------------------
+Mean=0.6753  Median=0.6943
+Pass BOTH: 45066/52995 (85.0%)
+
+TOP 20 MOST SYNTHESIZABLE
+----------------------------------------
+  # 1  SA=1.603  RA=0.990  Comb=0.962  CCc1ccccc1-c1cccc(CCc2ccccc2)c1
+  # 2  SA=1.591  RA=0.983  Comb=0.959  CCc1ccccc1OCCc1ccc(-c2ccccc2)cc1
+  # 3  SA=1.716  RA=0.996  Comb=0.958  CCCCc1cc(CCCC)cc(-c2ccccc2)c1
+  # 4  SA=1.706  RA=0.993  Comb=0.957  c1ccc(CCc2ccc(CCc3ccco3)cc2)cc1
+  # 5  SA=1.716  RA=0.994  Comb=0.957  CCCCCc1ccc(CCCc2cccnc2)cc1
+  # 6  SA=1.746  RA=0.994  Comb=0.956  CCCCCCCCc1ccc(-c2ccco2)cc1
+  # 7  SA=1.772  RA=0.995  Comb=0.955  Cc1ccc(CCCc2ccc(-c3ccsc3)cc2)cc1
+  # 8  SA=1.722  RA=0.988  Comb=0.954  CC(C)COCCCCCCCCc1ccccc1
+  # 9  SA=1.806  RA=0.994  Comb=0.952  CCCCCCCCc1ccc(-c2ccsc2)cc1
+  #10  SA=1.797  RA=0.993  Comb=0.952  c1ccc(CCCCc2ccc(-c3ccoc3)cc2)cc1
+  #11  SA=1.811  RA=0.994  Comb=0.952  Cc1cccc(CCCCCCCc2cccs2)c1
+  #12  SA=1.778  RA=0.990  Comb=0.952  CC(C)Cc1ccc(-c2ccccc2-c2ccccc2)nc1
+  #13  SA=1.836  RA=0.996  Comb=0.952  CCCCc1c(CCC)cccc1Cc1ccccc1
+  #14  SA=1.846  RA=0.990  Comb=0.948  CCc1ccc(-c2ccccn2)c(CCc2ccccc2)c1
+  #15  SA=1.847  RA=0.990  Comb=0.948  Cc1cc(Cc2ccccc2)cnc1CCc1ccccc1
+  #16  SA=1.886  RA=0.994  Comb=0.948  CCCc1cccc(CCCCCc2ccco2)c1
+  #17  SA=1.490  RA=0.950  Comb=0.948  c1ccc(-c2ccc(-c3ccccc3-c3ccncc3)cc2)cc1
+  #18  SA=1.919  RA=0.995  Comb=0.946  CCCc1cc(Cc2ccccc2)ccc1-c1cccs1
+  #19  SA=1.813  RA=0.983  Comb=0.946  CCCc1cccc(-c2ccccc2OCc2ccccn2)c1
+  #20  SA=1.844  RA=0.986  Comb=0.946  c1ccc(COCCCc2cccc(-c3ccco3)c2)cc1
+
+RECOMMENDATIONS
+----------------------------------------
+- Majority synthesizable. Prioritize by combined score for experiments.
+- Cross-reference with TANGO pair scores for holistic assessment.
+- Note: RAScore trained on ChEMBL is partially out-of-domain for OPV scaffolds.

@@ -1,0 +1,31 @@
+FP-PCA-FD TRAIN-VS-TRAIN (SPLIT-HALF) BASELINE
+======================================================================
+DONOR (n_ref = 157 unique canonical molecules)
+  Split-half FP-PCA-FD over 200 random 50/50 splits:
+    mean   = 0.235
+    std    = 0.190
+    median = 0.182
+    5th-95th pct = [0.037, 0.600]
+    min/max = [0.005, 1.047]
+  Manuscript-reported train-vs-generated FP-PCA-FD = 25.20
+  -> 25.20 exceeds 100.0% of the 200 train-vs-train split-half values (i.e. is at or above the 100.0th percentile of the pure-noise floor).
+  -> ratio train-vs-generated / split-half mean = 107.23x
+
+ACCEPTOR (n_ref = 483 unique canonical molecules)
+  Split-half FP-PCA-FD over 200 random 50/50 splits:
+    mean   = 0.122
+    std    = 0.109
+    median = 0.086
+    5th-95th pct = [0.018, 0.325]
+    min/max = [0.006, 0.686]
+  Manuscript-reported train-vs-generated FP-PCA-FD = 17.00
+  -> 17.00 exceeds 100.0% of the 200 train-vs-train split-half values (i.e. is at or above the 100.0th percentile of the pure-noise floor).
+  -> ratio train-vs-generated / split-half mean = 139.69x
+
+NOTE ON PFD (property-embedding Frechet distance, manuscript values 444.3 / 428.0):
+The trained property-embedding model used for this metric was not persisted to disk
+in the available run artefacts, so a matched train-vs-train PFD baseline could not be
+recomputed without retraining that model from scratch. Only the FP-PCA-FD baseline
+above is reproduced here; the manuscript text explicitly flags PFD as lacking an
+equivalent baseline and recommends one be computed in a future revision once the
+embedding-model checkpoint is retained.

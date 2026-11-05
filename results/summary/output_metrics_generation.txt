@@ -1,0 +1,92 @@
+GENERATION METRICS SUMMARY (POOLED ACROSS ALL RANKS)
+============================================================
+
+DONORS:
+  Total unique molecules (pooled): 52995
+  MFD (Fréchet Distance): 17.194
+  MIS (Inception Score): 0.848 ± 0.055
+  TANGO Score (mean): 0.472
+  TANGO Score (range): [0.149, 0.727]
+
+ACCEPTORS:
+  Total unique molecules (pooled): 53719
+  MFD (Fréchet Distance): 2.734
+  MIS (Inception Score): 0.813 ± 0.059
+  TANGO Score (mean): 0.532
+  TANGO Score (range): [0.147, 0.785]
+
+============================================================
+DMPNN DEVICE PROPERTY PREDICTIONS (POOLED)
+============================================================
+
+-- FINAL BLENDED (max of Methods 1-3, physically clipped) --
+  PCE: mean=20.639, std=0.769, max=21.000
+  Jsc: mean=18.149, std=4.361, max=30.000
+  FF: mean=0.800, std=0.007, max=0.850
+  Voc: mean=1.663, std=0.119, max=2.000
+  pair_tango: mean=0.440, std=0.076, max=0.706
+  donor_tango: mean=0.472, std=0.088, max=0.722
+  acceptor_tango: mean=0.515, std=0.087, max=0.733
+
+-- Method 1 (Ridge + Gaussian Process surrogate) --
+  surrogate_PCE: mean=5.871, std=3.360, min=0.020, max=18.220
+  surrogate_Jsc: mean=11.280, std=5.361, min=0.215, max=27.700
+  surrogate_FF: mean=0.534, std=0.030, min=0.250, max=0.785
+  surrogate_Voc: mean=0.854, std=0.052, min=0.300, max=1.295
+
+-- Method 2 (Scharber-model physics estimate) --
+  phys_physics_PCE: mean=20.639, std=0.769, min=9.578, max=21.000
+  phys_physics_Jsc: mean=16.323, std=1.395, min=15.115, max=26.172
+  phys_physics_FF: mean=0.800, std=0.007, min=0.736, max=0.850
+  phys_physics_Voc: mean=1.663, std=0.119, min=0.600, max=2.000
+
+-- Method 3 (SISSO++ equations, refit + r-corrected on DMPNN.csv) --
+  sisso_PCE: mean=5.223, std=0.083, min=4.810, max=5.584
+  sisso_Jsc: mean=9.357, std=3330.071, min=-397870.429, max=469264.792
+  sisso_FF: mean=0.713, std=0.009, min=0.678, max=0.755
+  sisso_Voc: mean=-0.153, std=0.007, min=-0.186, max=-0.114
+
+  Total D-A pairs evaluated (pooled, deduplicated): 11988459
+  High-performance pairs (pooled): 3010021
+  Thresholds: PCE>18%, Jsc>25 mA/cm2, FF>0.8, Voc>1.0 V, pair_tango(synthesizability)>=0.5 [Tier1] / >=0.35 [Tier2]
+  (pair_tango = min(donor_tango, acceptor_tango); a pair is only as
+   synthesizable as its harder-to-make partner, so 'high-performance'
+   here means both good predicted device properties AND a plausible
+   synthesis route for both molecules — not device properties alone.)
+
+  Method 3 (SISSO) accuracy — refit on DMPNN.csv vs. paper's published values:
+    Jsc: r_corrected=0.7034314640186413, rmse_corrected=4.771389946838563, maxae_corrected=16.053366857600114 (paper published: r=0.913, rmse=0.407, maxae=1.104)
+    Voc: r_corrected=0.5159838929047895, rmse_corrected=0.1279538031659321, maxae_corrected=0.4576678756259864 (paper published: r=0.921, rmse=0.39, maxae=0.07)
+    FF: r_corrected=0.4497997874246207, rmse_corrected=0.1170864919873411, maxae_corrected=0.3998327651483681 (paper published: r=0.765, rmse=0.625, maxae=1.561)
+    PCE: r_corrected=0.631785464062897, rmse_corrected=3.4360667400154266, maxae_corrected=10.731312747095028 (paper published: r=0.894, rmse=0.448, maxae=1.236)
+    delta_mu_ge_mapper(RF,LOOCV_on_SISSO_ref): r_corrected=nan, rmse_corrected=nan, maxae_corrected=nan (paper published: r=nan, rmse=nan, maxae=nan)
+
+============================================================
+PER-APPROACH MOLECULE COUNTS (SUMMED ACROSS ALL RANKS)
+============================================================
+Approach                         Donors  Acceptors
+--------------------------------------------------
+Active_Learning                   11717      12000
+Base_GAN                          12000      12000
+CoCoGraph_Constrained             11678      12000
+Conditional_GAN                   11798      12000
+Graph_GAN                         11888      12000
+Junction_Tree                     11835      12000
+Multi_Objective                   11719      12000
+RL_GAN                            11771      12000
+SMILES_GAN                        11929      12000
+Training_Set_Augmentation        215280     213120
+Transfer_Learning                 11741      12000
+Transformer                       11708      12000
+VAE                               11726      12000
+--------------------------------------------------
+TOTAL                            356790     357120
+
+
+Interpretation:
+Lower MFD = better match to training distribution
+Higher MIS = better quality and diversity
+Higher TANGO = more synthesizable (Guo & Schwaller 2026)
+
+NOTE: All statistics above are computed on the POOLED/MERGED dataset
+across 240 ranks, not a single rank's subset.
