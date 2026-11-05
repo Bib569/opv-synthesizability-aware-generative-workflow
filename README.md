@@ -616,18 +616,9 @@ The following files are needed to recompute some results but are too large for g
 - Trained models (`models/postgen`, `models/fcd`, `models/aizynthfinder`) were not retained.
 - The HPC conda environment `RAScore` was not recorded, so the HPC stages are not pinned. Stages 1 to 3 were not rerun in any check.
 
-### Manuscript Sources
-
-The manuscript sources are not distributed in this repository, and the figure numbering follows the associated paper. The repository ships PNG renderings produced by the scripts in `scripts/figures/`. The Fig. 6 dashed FF threshold is drawn at 0.8, while the Tier-1 criterion in the text is FF >= 0.75.
-
 ### Other
 
-- `postgen_pipeline.py` is the run-time copy (`_MAX_CHEMNET_SMILES_LEN = 350`); the newer working copy differs in that one constant (349).
-- `data/input/Guzik_data.csv` was not found in the reference list of the manuscript when this repository was assembled; its provenance and licence are unconfirmed.
-- The `hpc/` drivers contain site-specific settings (partition name, job ID, environment name).
 - `src/plotting/manuscript_plots_revised.py` has the relative default `--data-dir latest_results`, which does not exist in this repository; pass `--data-dir` explicitly.
-- The manuscript does not tie the two e-mail addresses on its title page to individual authors. The pairing used in [Authors](#authors) and [Contact](#contact) follows the author order and the layout of the sibling repository README.
-- The Data Availability sentence in the manuscript ("upon reasonable request") and a public repository that ships processed data are not worded the same way. The authors should decide whether to update the manuscript sentence to point to this repository.
 - Every change made to the original code when this repository was assembled is recorded in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## License
