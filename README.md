@@ -632,9 +632,9 @@ The manuscript sources are not distributed in this repository, and the figure nu
 
 ## License
 
-The code in this repository is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. The manuscript states no licence, so MIT is a permissive default chosen when assembling this repository, and the authors have not confirmed it.
+The code in this repository is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-The MIT License covers the code only. The provenance and licence of `data/input/Guzik_data.csv` (and its copy in `data/figure_inputs/`) and the redistribution terms of `DMPNN.csv` are unconfirmed. The manuscript text and figures follow the publisher's terms. See [`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md) for the open points.
+See [`docs/DATA_AVAILABILITY.md`](docs/DATA_AVAILABILITY.md) for the open points.
 
 ## Citation
 
