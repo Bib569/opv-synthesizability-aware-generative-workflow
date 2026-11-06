@@ -4,6 +4,22 @@ Record of every change made to the original source files when this repository wa
 folder. Scientific logic, numerical settings and plot styling were not changed. Original files in the working
 folder were copied, never moved or edited.
 
+## Approach count: 13 generation approaches (12 routes + Training_Set_Augmentation)
+- `src/generation/GAN_240_final.py`: log messages, comments, docstrings and the numbering in the metadata and overall-metrics
+  writers now say 13 generation approaches = the 12 hybrid routes in `approach_mapping` + the `Training_Set_Augmentation` stream.
+  Before, most log text said "12 methods", one comment said 13, and two entries shared slot 12 in the output files.
+  The metadata writer now numbers `Training_Set_Augmentation` as 13, and the metrics writer lists CoCoGraph as 12 and
+  `Training_Set_Augmentation` as 13. Text only: an AST comparison with string constants masked differs in exactly one added
+  `f.write(...)` statement (the new CoCoGraph line in the metrics writer). No logic, variable, file name or output-label change
+  (`hybrid_12method_*` file names and `*_Hybrid_12Method` labels are kept so downstream matching still works).
+  The "REPOSITORY NOTE" header at the top of the repository copy was kept and now also states 13 = 12 + 1.
+- `README.md` and `docs/PIPELINE.md`: wording changed from 12 generation routes to 13 generation approaches
+  (12 hybrid routes + `Training_Set_Augmentation`). The README item "Number of generation routes" was removed from
+  "Numbers That Cannot Be Traced to a File in This Repository" and the following items were renumbered (the in-text
+  reference to item 10 now points to item 9). The paper is being updated from 12 to 13 approaches.
+- Archived result files under `results/` (for example `results/summary/output_metrics_generation.txt`) were produced by the
+  original run before the log correction, so their internal numbering and wording may still show the earlier text. They were not edited.
+
 ## Removed manuscript sources
 
 - Removed manuscript/ (main.tex, si.tex, references.bib, figure PDFs); the repository now contains code, data and results only.

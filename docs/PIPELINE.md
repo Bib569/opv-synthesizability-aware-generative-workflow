@@ -7,7 +7,7 @@ files that are committed. Paths are relative to the repository root.
 
 ```
 src/
-  generation/          GAN_240_final.py            stage 1: 12-route generation, pairing, Ridge+isotonic+GP surrogate, tiering, disjoint CV
+  generation/          GAN_240_final.py            stage 1: 13-approach generation (12 routes + Training_Set_Augmentation), pairing, Ridge+isotonic+GP surrogate, tiering, disjoint CV
   postprocessing/      merge_rank_outputs_final.py merges the 240 per-rank outputs (--stage generation | postgen)
   postgen/             postgen_pipeline.py         stage 2: metrics, property models, E_loss gate, retrosynthesis audit
   synthesizability/    synthesizability_scoring.py stage 3: SAScore / RAScore / combined score

@@ -9,7 +9,7 @@ A synthesizability-aware hybrid molecular-generation and screening workflow that
 
 This repository (`opv-synthesizability-aware-generative-workflow`) holds the code of the workflow, the processed data behind every data figure, the generated donor and acceptor libraries, and the scripts that redraw the figures. The workflow generates class-specific donor and acceptor libraries, scores them for synthetic practicality, pairs them, and shortlists pairs by predicted performance and building-block compatibility. The device-property model is a screening tool for ranking, not a predictor of experimentally realized performance.
 
-- **Chemically controlled generation**: 12 complementary proposal and augmentation routes, followed by common structural validation, canonicalization, deduplication and an adaptive nearest-neighbor novelty filter, give 52,995 unique donors and 53,719 unique acceptors with no exact matches to the reference structures
+- **Chemically controlled generation**: 13 complementary generation approaches (12 hybrid routes plus the `Training_Set_Augmentation` stream), followed by common structural validation, canonicalization, deduplication and an adaptive nearest-neighbor novelty filter, give 52,995 unique donors and 53,719 unique acceptors with no exact matches to the reference structures
 - **Synthetic practicality as a prioritization attribute**: SAScore, RAScore and a TANGO-inspired building-block compatibility heuristic rank molecules without claiming a confirmed synthesis route
 - **Pair-level screening with stated limits**: 11,988,459 donor-acceptor pairs are ranked by a Ridge + isotonic + Gaussian-process surrogate trained on 300 curated device records, and structure-disjoint validation defines where its predictions can and cannot be trusted
 
@@ -48,7 +48,7 @@ Bibhas Das<sup>1,*</sup> and Anirban Mondal<sup>1,*</sup>
 
 ## Abstract
 
-Molecular discovery in organic photovoltaics (OPVs) requires simultaneous optimization of donor and acceptor structures, molecular novelty, synthetic practicality, and device-level performance. We present a synthesizability-aware hybrid molecular-generation and screening workflow for OPV donor-acceptor discovery. Twelve complementary proposal and augmentation routes produced class-specific molecular libraries that, after structural validation, canonicalization, deduplication, and adaptive novelty filtering, yielded 52,995 unique donor candidates and 53,719 unique acceptor candidates with no exact matches to the reference structures. The libraries exhibited substantial scaffold and fingerprint diversity while retaining a measurable relationship to the OPV reference domain. Synthetic practicality was assessed using SAScore, RAScore, and a TANGO-inspired building-block compatibility heuristic; 85.0% of donors and 99.3% of acceptors satisfied the operational accessibility screen. Pairing the filtered libraries produced 11,988,459 donor-acceptor combinations, ranked using a ridge-regression surrogate with isotonic recalibration and Gaussian-process residual correction trained on 300 curated device records. A total of 2,832 Tier-2 candidate pairs satisfied joint predicted performance and compatibility criteria, including a small subset with predicted high efficiency and low energy loss. Structure-disjoint validation revealed target-dependent transferability, with particularly limited quantitative reliability for fill factor and open-circuit voltage. The reported device properties are therefore interpreted as screening-based prioritization signals rather than experimentally realized performance. The workflow provides a chemically interpretable route for expanding OPV chemical space and prioritizing donor-acceptor pairs for experimental or higher-fidelity computational follow-up.
+Molecular discovery in organic photovoltaics (OPVs) requires simultaneous optimization of donor and acceptor structures, molecular novelty, synthetic practicality, and device-level performance. We present a synthesizability-aware hybrid molecular-generation and screening workflow for OPV donor-acceptor discovery. Thirteen complementary proposal and augmentation approaches (twelve hybrid routes plus a training-set augmentation stream) produced class-specific molecular libraries that, after structural validation, canonicalization, deduplication, and adaptive novelty filtering, yielded 52,995 unique donor candidates and 53,719 unique acceptor candidates with no exact matches to the reference structures. The libraries exhibited substantial scaffold and fingerprint diversity while retaining a measurable relationship to the OPV reference domain. Synthetic practicality was assessed using SAScore, RAScore, and a TANGO-inspired building-block compatibility heuristic; 85.0% of donors and 99.3% of acceptors satisfied the operational accessibility screen. Pairing the filtered libraries produced 11,988,459 donor-acceptor combinations, ranked using a ridge-regression surrogate with isotonic recalibration and Gaussian-process residual correction trained on 300 curated device records. A total of 2,832 Tier-2 candidate pairs satisfied joint predicted performance and compatibility criteria, including a small subset with predicted high efficiency and low energy loss. Structure-disjoint validation revealed target-dependent transferability, with particularly limited quantitative reliability for fill factor and open-circuit voltage. The reported device properties are therefore interpreted as screening-based prioritization signals rather than experimentally realized performance. The workflow provides a chemically interpretable route for expanding OPV chemical space and prioritizing donor-acceptor pairs for experimental or higher-fidelity computational follow-up.
 
 (Abstract of the associated paper, with LaTeX markup removed.)
 
@@ -58,13 +58,13 @@ The framework consists of an integrated five-stage pipeline. Stages 1 to 3 were 
 
 ### Stage 1: Generation, Pairing and Surrogate Screening
 
-12 generation routes (plus training-set augmentation) produce donor and acceptor libraries, which are paired and ranked (`src/generation/GAN_240_final.py`, driver `hpc/sub_140.sh`, 240 SLURM ranks):
+13 generation approaches (12 hybrid routes plus the `Training_Set_Augmentation` stream) produce donor and acceptor libraries, which are paired and ranked (`src/generation/GAN_240_final.py`, driver `hpc/sub_140.sh`, 240 SLURM ranks):
 
 ```
 DMPNN.csv (300 device records) + Guzik_data.csv        data/input/
         |
         v
-12 generation routes -> validation -> canonicalization -> deduplication
+13 generation approaches (12 routes + Training_Set_Augmentation) -> validation -> canonicalization -> deduplication
         -> adaptive novelty filter -> donor library | acceptor library
         |
         v
@@ -182,7 +182,7 @@ opv-synthesizability-aware-generative-workflow/
 |
 |-- src/                                       # Pipeline code
 |   |-- generation/
-|   |   `-- GAN_240_final.py                   # Stage 1: 12-route generation, pairing, surrogate, tiering, disjoint CV
+|   |   `-- GAN_240_final.py                   # Stage 1: 13-approach generation (12 routes + Training_Set_Augmentation), pairing, surrogate, tiering, disjoint CV
 |   |-- postprocessing/
 |   |   `-- merge_rank_outputs_final.py        # Merges the 240 per-rank outputs (--stage generation | postgen)
 |   |-- postgen/
@@ -253,7 +253,7 @@ opv-synthesizability-aware-generative-workflow/
 |
 |-- results/                                   # Output tables and reports quoted in the manuscript
 |   |-- summary/
-|   |   |-- approach_statistics.csv            # Molecules per generation route
+|   |   |-- approach_statistics.csv            # Molecules per generation approach
 |   |   |-- dmpnn_prediction_stats.csv         # Summary statistics of the four surrogate outputs
 |   |   `-- output_metrics_generation.txt      # Pooled stage 1 metrics
 |   |-- postgen/
@@ -426,7 +426,7 @@ Donor-disjoint, acceptor-disjoint and Bemis-Murcko scaffold-disjoint splits are 
 
 ### Generation and Synthesizability Components
 
-- **Generation**: donor and acceptor libraries come from 12 proposal and augmentation routes. The coordinate-based adversarial component is implemented with TensorFlow/Keras and trained separately for donors and acceptors for five epochs, with Optuna used for hyperparameter searches (details in the Supporting Information of the paper)
+- **Generation**: donor and acceptor libraries come from 13 generation approaches: 12 hybrid routes plus the `Training_Set_Augmentation` stream. The coordinate-based adversarial component is implemented with TensorFlow/Keras and trained separately for donors and acceptors for five epochs, with Optuna used for hyperparameter searches (details in the Supporting Information of the paper)
 - **Synthetic practicality**: SAScore <= 6.0 and RAScore >= 0.5 define the operational screen (`--threshold-sa` and `--threshold-ra` in `synthesizability_scoring.py`). The combined synthesizability is 0.5 x normalized SAScore + 0.5 x RAScore. The TANGO-inspired score is S = alpha FMS + (1 - alpha) BB-Tanimoto with alpha = 0.5. It is a domain-specific compatibility heuristic and not a reproduction of the published TANGO method
 
 ## Results
@@ -444,7 +444,7 @@ All numbers below are taken from the associated paper.
 | Mean TANGO-inspired score | 0.463 | 0.502 |
 | Pass the SAScore <= 6.0 and RAScore >= 0.5 screen | 85.0 % (45,066 / 52,995) | 99.3 % (53,351 / 53,719) |
 
-The pass rates come from a run whose RAScore backend was the built-in heuristic fallback; see [Limitations and Reproducibility Notes](#limitations-and-reproducibility-notes), item 10.
+The pass rates come from a run whose RAScore backend was the built-in heuristic fallback; see [Limitations and Reproducibility Notes](#limitations-and-reproducibility-notes), item 9.
 
 ### Pair-Level Predictions
 
@@ -518,7 +518,7 @@ Paths are relative to the repository root. Column descriptions follow the column
 
 | File | Content |
 |---|---|
-| `results/summary/approach_statistics.csv` (13 x 4) | `approach`, `donor_count`, `acceptor_count`, `total`: molecules per generation route before deduplication. It has 13 labels because `Training_Set_Augmentation` is listed in addition to the 12 routes. |
+| `results/summary/approach_statistics.csv` (13 x 4) | `approach`, `donor_count`, `acceptor_count`, `total`: molecules per generation approach before deduplication. The 13 labels are the 12 hybrid routes plus the `Training_Set_Augmentation` stream. |
 | `results/summary/dmpnn_prediction_stats.csv` (9 x 5) | Mean, std, min, max, median, physical bounds, and counts at the lower and upper bound for the four surrogate outputs (`PCE`, `Jsc`, `FF`, `Voc`). The first column has no header. |
 | `results/summary/output_metrics_generation.txt` | Pooled stage 1 metrics (pair count, library counts, surrogate means and maxima). |
 | `results/postgen/generative_metrics.csv` (2 x 76) | One row per set (donor, acceptor): validity, uniqueness, novelty, internal diversity, scaffold diversity, nearest-neighbor similarity, FP-PCA Frechet distance, property-embedding Frechet distance, FCD, property-match, Wasserstein and Mahalanobis distances, SAScore summary. Source of most of SI Table S1. |
@@ -599,12 +599,11 @@ The Ridge + isotonic + Gaussian-process surrogate is a screening tool. The manus
 5. **Reference-set statement "46 entries with E_loss < 0.25 eV"**: `eloss_vs_pce_training_data.csv` flags 81 entries with `E_loss` below 0.25 eV (46 of them negative). The text and the data disagree.
 6. **Acceptor reference counts**: `results/postgen/generative_metrics.csv` and SI Table S1 give 481 reference acceptors, while `src/analysis/frechet_baseline_analysis.py` and `results/tier2_analysis/frechet_baseline_summary.txt` give 483.
 7. **"299 valid coordinate instances" for the donor GAN**: this count appears only in a job log that is not included. (`DMPNN.csv` has 300 rows and 299 distinct acceptor SMILES strings, consistent with the manuscript's "299 acceptor entries"; `results/postgen/stage_a_dataset_diagnostics.csv` reports 299 unique raw and 289 unique canonical acceptors.)
-8. **Number of generation routes**: the manuscript says 12; `results/summary/approach_statistics.csv` lists 13 labels (the extra one is `Training_Set_Augmentation`).
-9. **Sample sizes behind "complete library" wording**: nearest-neighbor similarity statistics use 20,000 molecules, MOSES IntDiv uses 5,000 molecules, and FCD uses 10,000 generated molecules (`results/postgen/generative_metrics.csv`).
-10. **RAScore backend**: `results/synthesizability/output_metrics_synthesizability.txt` reports `RAScore backend: heuristic`. `synthesizability_scoring.py` falls back to a simplified heuristic when the `rascore` package is missing, so the RAScore values and the 85.0% / 99.3% pass rates in that run come from the fallback. The manuscript describes the published RAscore classifier. The 864-molecule retrosynthesis audit reports backend `rascore`; whether the real model was loaded for it is not documented.
-11. **PFD** (property-embedding Frechet distance): the embedding model was not retained, so the value cannot be recomputed. The manuscript states this.
-12. **Source-database counts** (1318 devices, 667 acceptors, 279 donors) and other literature statements are external.
-13. **Everything that needs cluster-only assets**: the trained models, the `RAScore` conda environment, and the 240-rank run itself.
+8. **Sample sizes behind "complete library" wording**: nearest-neighbor similarity statistics use 20,000 molecules, MOSES IntDiv uses 5,000 molecules, and FCD uses 10,000 generated molecules (`results/postgen/generative_metrics.csv`).
+9. **RAScore backend**: `results/synthesizability/output_metrics_synthesizability.txt` reports `RAScore backend: heuristic`. `synthesizability_scoring.py` falls back to a simplified heuristic when the `rascore` package is missing, so the RAScore values and the 85.0% / 99.3% pass rates in that run come from the fallback. The manuscript describes the published RAscore classifier. The 864-molecule retrosynthesis audit reports backend `rascore`; whether the real model was loaded for it is not documented.
+10. **PFD** (property-embedding Frechet distance): the embedding model was not retained, so the value cannot be recomputed. The manuscript states this.
+11. **Source-database counts** (1318 devices, 667 acceptors, 279 donors) and other literature statements are external.
+12. **Everything that needs cluster-only assets**: the trained models, the `RAScore` conda environment, and the 240-rank run itself.
 
 ### Oversized Data That Is Not Distributed
 
