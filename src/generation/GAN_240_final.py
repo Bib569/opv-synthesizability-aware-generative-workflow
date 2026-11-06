@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # REPOSITORY NOTE (comment added when this repository was assembled; no code changed)
-# Pipeline stage 1: GAN generation (12 routes), pairing, Ridge+isotonic+GP surrogate, tiering, disjoint CV.
+# Pipeline stage 1: GAN generation (13 approaches = 12 routes + Training_Set_Augmentation), pairing, Ridge+isotonic+GP surrogate, tiering, disjoint CV.
 # Run from the flat run directory built by `sh hpc/setup_run_dir.sh` (see docs/PIPELINE.md);
 # the script expects DMPNN.csv / Guzik_data.csv and its sibling scripts in that directory.
 # Launched by hpc/sub_140.sh (240 SLURM ranks). Needs DMPNN.csv in the working directory.
@@ -6427,7 +6427,7 @@ def active_learning_generate(
 print("âœ“ Approach 10: Active Learning initialized")
 
 print("\n" + "=" * 80)
-print("ALL 12 GENERATION METHODS INITIALIZED SUCCESSFULLY")
+print("ALL 12 HYBRID ROUTES INITIALIZED SUCCESSFULLY (Training_Set_Augmentation is added afterwards as the 13th stream)")
 print("=" * 80)
 print("Approaches 1-6: Base GAN + 5 Structural Variations")
 print("Approaches 7-12: Advanced ML and constrained graph techniques")
@@ -6570,7 +6570,7 @@ def hybrid_generate_molecules(
     molecule_type="Donor",
 ):
     """
-    Generate molecules using all 12 methods in a hybrid pipeline
+    Generate molecules using all 12 hybrid routes in a hybrid pipeline (Training_Set_Augmentation is the 13th stream, added afterwards)
 
     Returns a dictionary with molecules from each approach
     """
@@ -7195,9 +7195,9 @@ def hybrid_generate_molecules(
         )
         logger.info(f"{approach_key}: {len(all_generated[approach_key])} NEW molecules generated")
     
-    # VALIDATION: Check that ALL 12 approaches have generated molecules
+    # VALIDATION: Check that ALL 12 hybrid routes (expected_approaches) have generated molecules; Training_Set_Augmentation is the 13th stream, added afterwards
     logger.info("=" * 80)
-    logger.info("VALIDATING ALL 12 APPROACHES GENERATED MOLECULES")
+    logger.info("VALIDATING ALL 12 HYBRID ROUTES GENERATED MOLECULES (Training_Set_Augmentation is the 13th stream, added afterwards)")
     logger.info("=" * 80)
     
     expected_approaches = [
@@ -7227,7 +7227,7 @@ def hybrid_generate_molecules(
     # Report status but DO NOT stop execution
     logger.info("=" * 80)
     if all_approaches_successful and all(len(all_generated[k]) > 0 for k in expected_approaches):
-        logger.info("âœ“âœ“âœ“ SUCCESS: ALL 12 GENERATION METHODS GENERATED MOLECULES âœ“âœ“âœ“")
+        logger.info("âœ“âœ“âœ“ SUCCESS: ALL 12 HYBRID ROUTES GENERATED MOLECULES âœ“âœ“âœ“")
     else:
         logger.warning(f"âš  PARTIAL SUCCESS: {successful_count}/{len(expected_approaches)} approaches generated molecules")
         if failed_approaches:
@@ -7742,7 +7742,7 @@ logger.info("TRAINING DONOR GAN")
 # logger.info("Acceptor GAN training completed successfully")
 
 # ============================================================================
-# OLD/SIMPLE GENERATION CODE - COMMENTED OUT TO ALLOW HYBRID 11-APPROACH TO RUN
+# OLD/SIMPLE GENERATION CODE - COMMENTED OUT TO ALLOW HYBRID 12-ROUTE TO RUN
 # ============================================================================
 # Generate more samples than needed to ensure uniqueness
 # num_samples = 3 * 300  # Generate 3 times the required number to ensure uniqueness
@@ -9082,15 +9082,15 @@ try:
     logger.info(f"Acceptor training set: {len(acceptor_training_smiles)} unique SMILES")
 
     # ============================================================================
-    # HYBRID 12-METHOD GENERATION
+    # HYBRID 12-ROUTE GENERATION (Training_Set_Augmentation is added afterwards as the 13th stream)
     # ============================================================================
 
     print("\n" + "=" * 80)
-    print("STARTING HYBRID 12-METHOD GENERATION")
+    print("STARTING HYBRID 12-ROUTE GENERATION (Training_Set_Augmentation is added afterwards as the 13th stream)")
     print("=" * 80 + "\n")
 
-    # Generate molecules using all 12 methods
-    logger.info("Generating donor molecules using hybrid 12-method pipeline...")
+    # Generate molecules using all 12 hybrid routes
+    logger.info("Generating donor molecules using hybrid 12-route pipeline...")
     hybrid_donor_results = hybrid_generate_molecules(
         donor_generator,
         donor_best_params["latent_dim"],
@@ -9104,7 +9104,7 @@ try:
         f"Hybrid donor generation completed. Generated {sum(len(v) for v in hybrid_donor_results.values())} molecules across all approaches"
     )
 
-    logger.info("Generating acceptor molecules using hybrid 12-method pipeline...")
+    logger.info("Generating acceptor molecules using hybrid 12-route pipeline...")
     hybrid_acceptor_results = hybrid_generate_molecules(
         acceptor_generator,
         acceptor_best_params["latent_dim"],
@@ -9147,9 +9147,9 @@ try:
     donor_training_fps = fingerprints_from_smiles(donor_smiles)
     acceptor_training_fps = fingerprints_from_smiles(acceptor_smiles)
 
-    # Process donors from all 12 methods
+    # Process donors from all 12 hybrid routes
     logger.info(
-        "Processing and deduplicating donor molecules from all 12 methods..."
+        "Processing and deduplicating donor molecules from all 12 hybrid routes..."
     )
     for key, approach_name in approach_mapping:
         approach_smiles = hybrid_donor_results[key]
@@ -9174,9 +9174,9 @@ try:
             f"  {approach_name}: {added} unique valid donors added (from {len(approach_smiles)} generated)"
         )
 
-    # Process acceptors from all 12 methods
+    # Process acceptors from all 12 hybrid routes
     logger.info(
-        "Processing and deduplicating acceptor molecules from all 12 methods..."
+        "Processing and deduplicating acceptor molecules from all 12 hybrid routes..."
     )
     for key, approach_name in approach_mapping:
         approach_smiles = hybrid_acceptor_results[key]
@@ -10038,7 +10038,7 @@ try:
 
     # Save additional metadata
     with open(f"hybrid_12method_metadata_{timestamp}.txt", "w") as f:
-        f.write("HYBRID 12-METHOD GENERATION METADATA\n")
+        f.write("HYBRID GENERATION METADATA (12 HYBRID ROUTES + Training_Set_Augmentation = 13 STREAMS)\n")
         f.write("=" * 50 + "\n\n")
         f.write("Generation Parameters:\n")
         f.write(f"  Donor latent dim: {donor_best_params['latent_dim']}\n")
@@ -10063,7 +10063,7 @@ try:
         ptv_donor_count = donor_sources.count("Training_Set_Augmentation")
         ptv_acceptor_count = acceptor_sources.count("Training_Set_Augmentation")
         f.write(
-            f"  12. Training_Set_Augmentation: {ptv_donor_count} donors, {ptv_acceptor_count} acceptors\n"
+            f"  13. Training_Set_Augmentation: {ptv_donor_count} donors, {ptv_acceptor_count} acceptors\n"
         )
         f.write(
             "\nNote: Training_Set_Augmentation are SMARTS/BRICS modifications of training molecules\n"
@@ -10333,10 +10333,10 @@ try:
 
         # Save with timestamp filename
         with open(f"hybrid_12method_overall_metrics_{timestamp}.txt", "w") as f:
-            f.write("HYBRID 12-METHOD OVERALL METRICS\n")
+            f.write("HYBRID OVERALL METRICS (12 HYBRID ROUTES + Training_Set_Augmentation = 13 STREAMS)\n")
             f.write("=" * 50 + "\n\n")
             f.write(
-                "Combined Results from All 12 Generation Methods (Maximum Diversity):\n"
+                "Combined Results from All 13 Generation Methods (Maximum Diversity; 12 hybrid routes + Training_Set_Augmentation):\n"
             )
             f.write("  1. Base GAN (3D Coordinates)\n")
             f.write("  2. SMILES-Based GAN\n")
@@ -10349,7 +10349,8 @@ try:
             f.write("  9. Transfer Learning with Pre-trained Embeddings\n")
             f.write("  10. Multi-Objective Optimization (Pareto Frontier)\n")
             f.write("  11. Active Learning with Uncertainty Sampling\n")
-            f.write("  12. Per-Training Variants (SMARTS/BRICS modifications)\n\n")
+            f.write("  12. CoCoGraph-Inspired Constrained Graph Generation\n")
+            f.write("  13. Training_Set_Augmentation / Per-Training Variants (SMARTS/BRICS modifications)\n\n")
 
             f.write("DONORS:\n")
             f.write(f"  Total molecules: {len(combined_donor_mols)}\n")
@@ -10436,8 +10437,8 @@ try:
             print(f"âœ— Failed to save output_metrics.txt: {e}")
 
     print("\n" + "=" * 80)
-    print("HYBRID 12-METHOD PIPELINE COMPLETED SUCCESSFULLY!")
-    print("GENERATED NEW, NOVEL MOLECULES FROM ALL 12 METHODS BASED ON TRAINING DATA")
+    print("HYBRID GENERATION PIPELINE (12 HYBRID ROUTES + Training_Set_Augmentation) COMPLETED SUCCESSFULLY!")
+    print("GENERATED NEW, NOVEL MOLECULES FROM ALL 13 GENERATION STREAMS BASED ON TRAINING DATA")
     print("=" * 80)
     print("\nMOLECULE GENERATION STRATEGY:")
     print("âœ“ Each approach generates NEW molecules derived from training SMILES")
@@ -10476,7 +10477,7 @@ try:
     print(
         f"  - acceptor_hybrid_12method_visualization_data.csv - Acceptor data"
     )
-    print("\nAll 12 Generation Methods Used:")
+    print("\nAll 13 Generation Methods Used:")
     print("  1. Base GAN (3D Coordinates)")
     print("  2. SMILES-Based GAN")
     print("  3. Graph-Based GAN")
@@ -10489,7 +10490,7 @@ try:
     print("  10. Multi-Objective Optimization")
     print("  11. Active Learning")
     print("  12. CoCoGraph-Inspired Constrained Graph Generation")
-    print("  + Per-Training Variants (SMARTS/BRICS modifications)")
+    print("  13. Training_Set_Augmentation / Per-Training Variants (SMARTS/BRICS modifications)")
     
     # Print detailed molecule count by approach
     print("\n" + "=" * 80)
@@ -10536,7 +10537,7 @@ try:
     
     logger.info(f"Total execution completed: {datetime.datetime.now()}")
     logger.info("Check the log file (gan_pipeline_log.txt) for detailed execution trace")
-    logger.info("All 12 generation methods contributed molecules - see counts above")
+    logger.info("All 13 generation methods (12 hybrid routes + Training_Set_Augmentation) contributed molecules - see counts above")
     
     # FINAL VALIDATION: Ensure all required output files exist
     logger.info("=" * 80)
